@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Senior Trip">
+<meta name="theme-color" content="#0a0a0f">
+<title>Senior Trip 2026</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,${B64}">
+<link rel="shortcut icon" href="data:image/png;base64,${B64}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0; --surface: #ffffff; --surface2: #eeede9; --border: #dddcd8;
+    --text: #111110; --text2: #666560; --text3: #999890;
+    --accent: #e8440a; --accent2: #1a56db; --green: #16a34a;
+    --nav-h: 68px; --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e0e12; --surface: #17171d; --surface2: #1f1f27; --border: #2a2a35;
+      --text: #f0efe8; --text2: #9998a0; --text3: #55545e;
+      --accent: #ff5520; --accent2: #4d90fe; --green: #22c55e;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+  #app { height: 100dvh; display: flex; flex-direction: column; }
+  .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+  .screen.active { display: flex; }
+  .header { padding: 52px 20px 16px; background: var(--bg); flex-shrink: 0; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
+  .header-city { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+  .header-dates { font-size: 13px; color: var(--text2); font-weight: 500; }
+  .city-flag { font-size: 24px; }
+  .tabs { display: flex; gap: 6px; padding: 0 20px 14px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; background: var(--bg); }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex-shrink: 0; padding: 7px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--text2); transition: all .18s; font-family: 'DM Sans', sans-serif; }
+  .tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 16px calc(var(--nav-h) + var(--safe-bottom) + 16px); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .card-body { font-size: 14px; color: var(--text2); line-height: 1.6; }
+  .card-body strong { color: var(--text); font-weight: 500; }
+  .day-card { background: var(--surface); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); overflow: hidden; }
+  .day-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; user-select: none; -webkit-user-select: none; }
+  .day-num { width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: white; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .day-info { flex: 1; }
+  .day-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+  .day-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
+  .day-chevron { color: var(--text3); font-size: 18px; transition: transform .2s; }
+  .day-card.open .day-chevron { transform: rotate(90deg); }
+  .day-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+  .day-card.open .day-body { display: block; }
+  .stop { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .stop:last-child { border-bottom: none; }
+  .stop-time { font-size: 11px; font-weight: 600; color: var(--accent); width: 48px; flex-shrink: 0; padding-top: 2px; }
+  .stop-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .stop-note { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .food-card { background: var(--surface); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 12px; }
+  .food-emoji { font-size: 28px; flex-shrink: 0; }
+  .food-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .food-local { font-size: 13px; color: var(--accent2); font-weight: 500; margin-bottom: 4px; }
+  .food-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .food-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; background: var(--surface2); color: var(--text2); margin-top: 6px; margin-right: 4px; }
+  .transport-row { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .transport-row:last-child { border-bottom: none; }
+  .transport-icon { font-size: 22px; flex-shrink: 0; width: 32px; text-align: center; }
+  .transport-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .transport-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .emergency-num { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .emergency-num:last-child { border-bottom: none; }
+  .en-label { font-size: 13px; color: var(--text2); }
+  .en-val { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--accent); text-align: right; max-width: 60%; }
+  .address-block { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .address-block:last-child { border-bottom: none; }
+  .addr-place { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .addr-local { font-size: 14px; color: var(--accent2); font-weight: 500; margin-bottom: 2px; }
+  .addr-en { font-size: 12px; color: var(--text2); }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin: 20px 0 10px; padding: 0 4px; }
+  .placeholder { text-align: center; padding: 48px 24px; color: var(--text3); }
+  .placeholder-icon { font-size: 40px; margin-bottom: 12px; }
+  .placeholder-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
+  .placeholder-text { font-size: 14px; line-height: 1.6; }
+  .bottom-nav { display: flex; background: var(--surface); border-top: 1px solid var(--border); height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); flex-shrink: 0; position: relative; z-index: 100; overflow-x: auto; scrollbar-width: none; }
+  .bottom-nav::-webkit-scrollbar { display: none; }
+  .nav-item { flex: 1; min-width: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; padding-top: 8px; -webkit-tap-highlight-color: transparent; transition: opacity .15s; }
+  .nav-item:active { opacity: 0.6; }
+  .nav-icon { font-size: 20px; transition: transform .2s; }
+  .nav-item.active .nav-icon { transform: scale(1.15); }
+  .nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.03em; color: var(--text3); transition: color .15s; white-space: nowrap; }
+  .nav-item.active .nav-label { color: var(--accent); }
+  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: 0; transition: opacity .15s; margin-top: -2px; }
+  .nav-item.active .nav-dot { opacity: 1; }
+  .overview-hero { background: var(--surface); border-radius: 20px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; opacity: 0.04; font-size: 120px; display: flex; align-items: center; justify-content: center; pointer-events: none; user-select: none; }
+  .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .hero-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 6px; }
+  .hero-sub { font-size: 14px; color: var(--text2); line-height: 1.5; }
+  .hero-stats { display: flex; gap: 16px; margin-top: 16px; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .city-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .city-chip { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: border-color .15s; -webkit-tap-highlight-color: transparent; }
+  .city-chip:active { border-color: var(--accent); }
+  .chip-flag { font-size: 26px; }
+  .chip-info { flex: 1; }
+  .chip-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+  .chip-dates { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .chip-arrow { color: var(--text3); font-size: 18px; }
+  /* HOTEL CARD */
+  .hotel-card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .hotel-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+  .hotel-address { font-size: 13px; color: var(--accent2); margin-bottom: 8px; }
+  .hotel-address-local { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+  .hotel-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .hotel-tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: var(--surface2); color: var(--text2); }
+  .hotel-note { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  /* CHECKLIST */
+  .check-section { margin-bottom: 4px; }
+  .check-section-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text3); padding: 14px 0 8px; }
+  .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .check-item:last-child { border-bottom: none; }
+  .check-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; margin-top: 1px; }
+  .check-item.done .check-box { background: var(--green); border-color: var(--green); }
+  .check-item.done .check-box::after { content: '✓'; font-size: 13px; font-weight: 700; color: white; }
+  .check-label { font-size: 14px; color: var(--text); line-height: 1.4; transition: color .15s; }
+  .check-item.done .check-label { color: var(--text3); text-decoration: line-through; }
+  /* FLIGHT CARD */
+  .flight-card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .flight-route { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .flight-code { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+  .flight-arrow { color: var(--text3); font-size: 16px; flex: 1; text-align: center; }
+  .flight-times { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .flight-time-block { }
+  .flight-time { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
+  .flight-airport { font-size: 11px; color: var(--text3); font-weight: 600; letter-spacing: 0.08em; margin-top: 2px; }
+  .flight-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .flight-tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: var(--surface2); color: var(--text2); }
+  .flight-tag.alert { background: rgba(232,68,10,0.12); color: var(--accent); }
+  /* TRAIN CARD */
+  .train-card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 2px solid var(--accent2); }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══ HOME ══ -->
+<div class="screen active" id="screen-home">
+  <div class="header">
+    <div class="header-top"><div class="header-city">Senior Trip</div><div class="city-flag">✈️</div></div>
+    <div class="header-dates">June 1 – 20, 2026 · 5 guys · 3 countries</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('home','overview',this)">Overview</div>
+    <div class="tab" onclick="switchTab('home','checklist',this)">Checklist</div>
+    <div class="tab" onclick="switchTab('home','flights',this)">Flights</div>
+  </div>
+  <div class="content">
+
+    <div class="tab-panel active" id="home-overview">
+      <div class="overview-hero">
+        <div class="hero-bg">🌏</div>
+        <div class="hero-eyebrow">The Trip</div>
+        <div class="hero-title">Asia 2026</div>
+        <div class="hero-sub">Japan · South Korea · China — 20 days, 5 guys, zero regrets.</div>
+        <div class="hero-stats">
+          <div class="stat"><div class="stat-num">20</div><div class="stat-label">Days</div></div>
+          <div class="stat"><div class="stat-num">5</div><div class="stat-label">Cities</div></div>
+          <div class="stat"><div class="stat-num">5</div><div class="stat-label">Guys</div></div>
+          <div class="stat"><div class="stat-num">3</div><div class="stat-label">Countries</div></div>
+        </div>
+      </div>
+      <div class="section-label">Jump to City</div>
+      <div class="city-list">
+        <div class="city-chip" onclick="goToCity('tokyo')"><div class="chip-flag">🇯🇵</div><div class="chip-info"><div class="chip-name">Tokyo</div><div class="chip-dates">Jun 2 – 7 · 5 nights · Cava House, Shinjuku</div></div><div class="chip-arrow">›</div></div>
+        <div class="city-chip" onclick="goToCity('seoul')"><div class="chip-flag">🇰🇷</div><div class="chip-info"><div class="chip-name">Seoul</div><div class="chip-dates">Jun 7 – 10 · 3 nights · Oriens Hotel, Myeongdong</div></div><div class="chip-arrow">›</div></div>
+        <div class="city-chip" onclick="goToCity('chongqing')"><div class="chip-flag">🇨🇳</div><div class="chip-info"><div class="chip-name">Chongqing</div><div class="chip-dates">Jun 10 – 14 · 4 nights · Da Ji Jun Ting Hotel</div></div><div class="chip-arrow">›</div></div>
+        <div class="city-chip" onclick="goToCity('zhangjiajie')"><div class="chip-flag">🇨🇳</div><div class="chip-info"><div class="chip-name">Zhangjiajie</div><div class="chip-dates">Jun 14 – 17 · 3 nights · Manyuan Resort</div></div><div class="chip-arrow">›</div></div>
+        <div class="city-chip" onclick="goToCity('xian')"><div class="chip-flag">🇨🇳</div><div class="chip-info"><div class="chip-name">Xi'an</div><div class="chip-dates">Jun 17 – 20 · 3 nights</div></div><div class="chip-arrow">›</div></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="home-checklist">
+      <div class="card" style="margin-bottom:8px">
+        <div class="card-body" style="font-size:12px">Tap items to check them off. Progress saves while the app is open.</div>
+      </div>
+      <div class="check-section">
+        <div class="check-section-title">🛂 Documents</div>
+        <div class="card" style="padding:4px 16px">
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Passport valid + China visas confirmed</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Japan Web registration complete (customs QR code)</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Korea e-arrival card filled out (do on flight)</div></div>
+        </div>
+      </div>
+      <div class="check-section">
+        <div class="check-section-title">🇯🇵 Japan Prep</div>
+        <div class="card" style="padding:4px 16px">
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Check into Zipair flight (get QR code)</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Tokyo Skytree tickets booked in advance</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">teamLab Planets tickets booked in advance</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Disneyland tickets (if going) booked in advance</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Japan data SIM / pocket WiFi arranged</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Cash for Japan (7-Eleven ATM accepts foreign cards)</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Google Maps + Google Translate downloaded offline</div></div>
+        </div>
+      </div>
+      <div class="check-section">
+        <div class="check-section-title">🇰🇷 Korea Prep</div>
+        <div class="card" style="padding:4px 16px">
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Check into Korean Air flight</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Kakao T app downloaded</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Naver Maps + Papago downloaded</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Korea data SIM arranged</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Cash for Korea</div></div>
+        </div>
+      </div>
+      <div class="check-section">
+        <div class="check-section-title">🇨🇳 China Prep — Do at Home!</div>
+        <div class="card" style="padding:4px 16px">
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Alipay set up with foreign card (do at home)</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">WeChat Pay set up (do at home)</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">VPN installed and tested (do at home)</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">DiDi app downloaded</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">China Global data SIM / eSIM arranged</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Chinese eSIM / phone number set up</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Some RMB cash brought</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Google Drive files downloaded offline</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Google/Baidu Translate downloaded offline</div></div>
+          <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Zhangjiajie National Forest Park tickets booked</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="home-flights">
+      <div class="section-label">All Flights & Intercity Travel</div>
+
+      <div class="flight-card">
+        <div class="card-label">Flight 1 · Jun 1 → Jun 2</div>
+        <div class="flight-route">
+          <div class="flight-code">SJC</div>
+          <div class="flight-arrow">✈️ ————</div>
+          <div class="flight-code">NRT</div>
+        </div>
+        <div class="flight-times">
+          <div class="flight-time-block"><div class="flight-time">11:40 AM</div><div class="flight-airport">SJC · Jun 1</div></div>
+          <div class="flight-time-block" style="text-align:right"><div class="flight-time">2:50 PM</div><div class="flight-airport">NRT · Jun 2</div></div>
+        </div>
+        <div class="flight-meta">
+          <span class="flight-tag">Zipair</span>
+          <span class="flight-tag alert">⚠️ Check in + QR code ready</span>
+          <span class="flight-tag">Japan Web QR for customs</span>
+        </div>
+      </div>
+
+      <div class="flight-card">
+        <div class="card-label">Flight 2 · Jun 7</div>
+        <div class="flight-route">
+          <div class="flight-code">NRT</div>
+          <div class="flight-arrow">✈️ ————</div>
+          <div class="flight-code">ICN</div>
+        </div>
+        <div class="flight-times">
+          <div class="flight-time-block"><div class="flight-time">8:55 AM</div><div class="flight-airport">NRT · Jun 7</div></div>
+          <div class="flight-time-block" style="text-align:right"><div class="flight-time">11:25 AM</div><div class="flight-airport">ICN · Jun 7</div></div>
+        </div>
+        <div class="flight-meta">
+          <span class="flight-tag">Korean Air</span>
+          <span class="flight-tag alert">⚠️ Leave hotel by 5:30 AM</span>
+          <span class="flight-tag">Korea e-arrival on flight</span>
+        </div>
+      </div>
+
+      <div class="flight-card">
+        <div class="card-label">Flight 3 · Jun 10</div>
+        <div class="flight-route">
+          <div class="flight-code">ICN</div>
+          <div class="flight-arrow">✈️ ————</div>
+          <div class="flight-code">CKG</div>
+        </div>
+        <div class="flight-times">
+          <div class="flight-time-block"><div class="flight-time">2:05 PM</div><div class="flight-airport">ICN · Jun 10</div></div>
+          <div class="flight-time-block" style="text-align:right"><div class="flight-time">4:55 PM</div><div class="flight-airport">CKG · Jun 10</div></div>
+        </div>
+        <div class="flight-meta">
+          <span class="flight-tag">Korean Air</span>
+          <span class="flight-tag">Check out hotel by 12:00 PM</span>
+          <span class="flight-tag alert">⚠️ Passport required at CKG</span>
+        </div>
+      </div>
+
+      <div class="train-card">
+        <div class="card-label" style="color:var(--accent2)">High-Speed Rail · Jun 14</div>
+        <div class="flight-route">
+          <div class="flight-code">CQG</div>
+          <div class="flight-arrow">🚄 ————</div>
+          <div class="flight-code">ZJJ</div>
+        </div>
+        <div class="flight-times">
+          <div class="flight-time-block"><div class="flight-time">Morning</div><div class="flight-airport">Chongqing · Jun 14</div></div>
+          <div class="flight-time-block" style="text-align:right"><div class="flight-time">~4–5 hrs</div><div class="flight-airport">Zhangjiajie</div></div>
+        </div>
+        <div class="flight-meta">
+          <span class="flight-tag">高铁 Gāo Tiě</span>
+          <span class="flight-tag">Book on 12306.cn or Trip.com</span>
+          <span class="flight-tag alert">⚠️ Passport required to board</span>
+        </div>
+      </div>
+
+      <div class="flight-card">
+        <div class="card-label">Flight 4 · Jun 17</div>
+        <div class="flight-route">
+          <div class="flight-code">DYG</div>
+          <div class="flight-arrow">✈️ ————</div>
+          <div class="flight-code">XIY</div>
+        </div>
+        <div class="flight-times">
+          <div class="flight-time-block"><div class="flight-time">11:00 AM</div><div class="flight-airport">DYG · Jun 17</div></div>
+          <div class="flight-time-block" style="text-align:right"><div class="flight-time">~2 hrs</div><div class="flight-airport">XIY Xi'an</div></div>
+        </div>
+        <div class="flight-meta">
+          <span class="flight-tag">Zhangjiajie Hehua Airport</span>
+          <span class="flight-tag alert">⚠️ Leave hotel by 8:30 AM</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Train Booking</div>
+        <div class="card-title">How to Book the Gaotie</div>
+        <div class="card-body">Book at <strong>Trip.com</strong> (easiest for foreigners) or 12306.cn. You'll need passport numbers for all 5 people. Book as early as possible — seats sell out. Show passport + ticket printout/QR at the station gate.<br><br>Chongqing has two main stations: <strong>Chongqing North (重庆北)</strong> is the main high-speed hub. Confirm your departure station when booking.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ TOKYO ══ -->
+<div class="screen" id="screen-tokyo">
+  <div class="header">
+    <div class="header-top"><div class="header-city">Tokyo 🗼</div><div class="city-flag">🇯🇵</div></div>
+    <div class="header-dates">Jun 2 – 7 · Arrive NRT 2:50 PM · Depart 8:55 AM</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('tokyo','itinerary',this)">Itinerary</div>
+    <div class="tab" onclick="switchTab('tokyo','food',this)">Food</div>
+    <div class="tab" onclick="switchTab('tokyo','transport',this)">Transport</div>
+    <div class="tab" onclick="switchTab('tokyo','hotel',this)">Hotel</div>
+    <div class="tab" onclick="switchTab('tokyo','emergency',this)">Emergency</div>
+  </div>
+  <div class="content">
+
+    <div class="tab-panel active" id="tokyo-itinerary">
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">1</div><div class="day-info"><div class="day-title">Arrival & Shibuya Night</div><div class="day-sub">Jun 2 · Land NRT 2:50 PM</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">~5 PM</div><div class="stop-content"><div class="stop-name">Arrive & Check In</div><div class="stop-note">Get Suica cards at airport. Take Narita Express (~90 min). Check in at Cava House, Shinjuku. Earliest check-in 3 PM.</div></div></div>
+          <div class="stop"><div class="stop-time">7:30 PM</div><div class="stop-content"><div class="stop-name">Shibuya Crossing</div><div class="stop-note">Hit it at night for full neon chaos. Shibuya Sky or Mag's Park for aerial views.</div></div></div>
+          <div class="stop"><div class="stop-time">8:30 PM</div><div class="stop-content"><div class="stop-name">Ichiran Ramen</div><div class="stop-note">Solo-booth tonkotsu. Register online queue before walking over. Open 24 hrs.</div></div></div>
+          <div class="stop"><div class="stop-time">9:30 PM</div><div class="stop-content"><div class="stop-name">MEGA Don Quijote</div><div class="stop-note">24-hr chaos store — Japanese snacks, candy, cheap souvenirs.</div></div></div>
+        </div>
+      </div>
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">2</div><div class="day-info"><div class="day-title">Harajuku, Meiji & Skytree</div><div class="day-sub">Jun 3 · Culture + skyline</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">9:00 AM</div><div class="stop-content"><div class="stop-name">Meiji Jingu</div><div class="stop-note">Forest walk to Shinto shrine. Free and peaceful.</div></div></div>
+          <div class="stop"><div class="stop-time">10:15 AM</div><div class="stop-content"><div class="stop-name">Takeshita Street</div><div class="stop-note">Crepes, gachapon, wild fashion. Budget ¥1,000–2,000.</div></div></div>
+          <div class="stop"><div class="stop-time">12:00 PM</div><div class="stop-content"><div class="stop-name">Shibuya Lunch + Shop</div><div class="stop-note">Conveyor belt sushi or gyudon (Yoshinoya). Explore Shibuya 109 area.</div></div></div>
+          <div class="stop"><div class="stop-time">6:00 PM</div><div class="stop-content"><div class="stop-name">Tokyo Skytree</div><div class="stop-note">⚠️ Book tickets online first! Sunset ~6:30 PM — both daylight + city lights from 450m.</div></div></div>
+        </div>
+      </div>
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">3</div><div class="day-info"><div class="day-title">Old Tokyo & Akihabara</div><div class="day-sub">Jun 4 · History + arcades</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">7:30 AM</div><div class="stop-content"><div class="stop-name">Tsukiji Outer Market</div><div class="stop-note">Breakfast sushi, tamagoyaki, street food. Arrive early — closes ~1 PM. Bring cash!</div></div></div>
+          <div class="stop"><div class="stop-time">9:30 AM</div><div class="stop-content"><div class="stop-name">Sensō-ji Temple</div><div class="stop-note">Tokyo's most iconic temple. Nakamise Street, omikuji fortune, back alleys of Asakusa.</div></div></div>
+          <div class="stop"><div class="stop-time">11:30 AM</div><div class="stop-content"><div class="stop-name">Ueno Park</div><div class="stop-note">Chill walk between Asakusa and Akihabara. Ponds, shrines, snacks.</div></div></div>
+          <div class="stop"><div class="stop-time">1:00 PM</div><div class="stop-content"><div class="stop-name">Akihabara</div><div class="stop-note">Anime, retro games, trading cards, figures, arcades (GiGO, Taito). Budget ¥2,000–5,000.</div></div></div>
+        </div>
+      </div>
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">4</div><div class="day-info"><div class="day-title">teamLab + Odaiba + Round One</div><div class="day-sub">Jun 5 · Art, vibes, chaos</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">10:00 AM</div><div class="stop-content"><div class="stop-name">teamLab Planets</div><div class="stop-note">⚠️ Book WEEKS ahead at teamlab.art — sells out! Barefoot water + infinity rooms. ~90 min.</div></div></div>
+          <div class="stop"><div class="stop-time">12:30 PM</div><div class="stop-content"><div class="stop-name">DiverCity / Odaiba</div><div class="stop-note">Life-sized Unicorn Gundam (check hourly activation schedule). Lunch + bayside chill.</div></div></div>
+          <div class="stop"><div class="stop-time">7:00 PM</div><div class="stop-content"><div class="stop-name">Round One Ikebukuro</div><div class="stop-note">Bowling, karaoke, arcades, batting cages. Open 24 hrs. Budget ¥2,000–4,000.</div></div></div>
+        </div>
+      </div>
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">5</div><div class="day-info"><div class="day-title">Yanaka + Shinjuku · Early Night</div><div class="day-sub">Jun 6 · ⚠️ Early flight tomorrow</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">10:00 AM</div><div class="stop-content"><div class="stop-name">Yanaka Ginza</div><div class="stop-note">Old-town Tokyo: street cats, indie cafes, best final souvenir shopping. Cash only.</div></div></div>
+          <div class="stop"><div class="stop-time">5:00 PM</div><div class="stop-content"><div class="stop-name">Shinjuku / Kabukicho</div><div class="stop-note">All-you-can-eat yakiniku dinner. Walk the neon streets.</div></div></div>
+          <div class="stop"><div class="stop-time">9:00 PM</div><div class="stop-content"><div class="stop-name">🚨 Hotel. Pack. Sleep.</div><div class="stop-note">Leave for NRT by 5:30 AM. Narita is 90 min away. Multiple alarms!</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tokyo-food">
+      <div class="food-card"><div class="food-emoji">🍜</div><div class="food-info"><div class="food-name">Ichiran Ramen</div><div class="food-local">一蘭 · Shibuya</div><div class="food-desc">Solo-booth tonkotsu. Customize broth, noodle firmness, spice level. Use online queue.</div><span class="food-tag">¥1,200–1,800</span><span class="food-tag">24 Hours</span></div></div>
+      <div class="food-card"><div class="food-emoji">🍣</div><div class="food-info"><div class="food-name">Tsukiji Morning Sushi</div><div class="food-local">築地場外市場</div><div class="food-desc">Fresh tuna, scallops, tamagoyaki for breakfast. Arrive 7–8 AM. Walk around before committing to a stall.</div><span class="food-tag">¥800–2,500</span><span class="food-tag">Cash Only</span><span class="food-tag">Morning Only</span></div></div>
+      <div class="food-card"><div class="food-emoji">🥩</div><div class="food-info"><div class="food-name">Yakiniku (BBQ)</div><div class="food-local">焼肉</div><div class="food-desc">Grill your own meat. Look for tabehoudai (all-you-can-eat). Shinjuku has tons of options.</div><span class="food-tag">¥2,000–3,500/person</span></div></div>
+      <div class="food-card"><div class="food-emoji">🍱</div><div class="food-info"><div class="food-name">Yoshinoya / Sukiya</div><div class="food-local">吉野家 / すき家</div><div class="food-desc">Cheap beef bowl chains. Fast, filling, everywhere. Gyudon + extra rice hits every time.</div><span class="food-tag">¥500–800</span><span class="food-tag">Budget Pick</span></div></div>
+      <div class="food-card"><div class="food-emoji">🥐</div><div class="food-info"><div class="food-name">Convenience Store Meals</div><div class="food-local">7-Eleven · FamilyMart · Lawson</div><div class="food-desc">Onigiri (¥150), egg salad sandwiches, hot oden, quality instant ramen. Open 24 hrs.</div><span class="food-tag">¥200–600</span><span class="food-tag">24 Hours</span></div></div>
+    </div>
+
+    <div class="tab-panel" id="tokyo-transport">
+      <div class="card"><div class="card-label">First Thing at NRT</div><div class="card-title">Get Suica Cards</div><div class="card-body">JR East Welcome Service counter (Terminal 2) or ticket machines. Load ¥3,000–5,000. Works on every train, subway, bus, and convenience store in Tokyo.</div></div>
+      <div class="card"><div class="card-label">Airport → City</div><div class="card-title">Narita Express (N'EX)</div><div class="card-body">~¥3,000 · ~90 min to Shinjuku. ¥4,000 round-trip tourist discount at JR windows. Luggage-friendly.</div></div>
+      <div class="card"><div class="card-label">Getting Around</div><div class="card-body">
+        <div class="transport-row"><div class="transport-icon">🚇</div><div class="transport-info"><div class="transport-title">Tokyo Metro + JR</div><div class="transport-desc">Suica on all lines. Google Maps handles routing perfectly. Most rides ¥170–320.</div></div></div>
+        <div class="transport-row"><div class="transport-icon">🚕</div><div class="transport-info"><div class="transport-title">Uber / Taxi</div><div class="transport-desc">Uber works in Tokyo. Taxis safe but pricey — ¥700 flag fall. Use for late nights only.</div></div></div>
+      </div></div>
+      <div class="card"><div class="card-label">⚠️ Departure Day · Jun 7</div><div class="card-title">Leave Hotel 5:30 AM</div><div class="card-body">Flight is 8:55 AM at NRT. N'EX takes ~90 min. Arrive airport by 7:15 AM minimum. Check out latest 10:00 AM.</div></div>
+    </div>
+
+    <div class="tab-panel" id="tokyo-hotel">
+      <div class="hotel-card">
+        <div class="card-label">Your Hotel</div>
+        <div class="hotel-name">Cava House</div>
+        <div class="hotel-address">1-29-1 Shinjuku, Shinjuku City, Tokyo</div>
+        <div class="hotel-address-local">〒160-0022 東京都新宿区新宿１丁目２９−１</div>
+        <div class="hotel-meta">
+          <span class="hotel-tag">Check-in Jun 2 · 3:00 PM earliest</span>
+          <span class="hotel-tag">Check-out Jun 7 · 10:00 AM latest</span>
+          <span class="hotel-tag">⭐ 5.0 · Shinjuku</span>
+        </div>
+        <div class="hotel-note">Apartment-style hotel near Shinjuku — spacious rooms with laundry and projector. Walking distance to Shinjuku station. Staff on-site 9 AM–6 PM. Leave luggage after checkout if needed.<br><br>📞 +81 3-5315-0837</div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tokyo-emergency">
+      <div class="card"><div class="card-label">Emergency Numbers</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Police</span><span class="en-val">110</span></div>
+        <div class="emergency-num"><span class="en-label">Ambulance / Fire</span><span class="en-val">119</span></div>
+        <div class="emergency-num"><span class="en-label">Tourist Helpline (EN)</span><span class="en-val">050-3816-2787</span></div>
+        <div class="emergency-num"><span class="en-label">US Embassy Tokyo</span><span class="en-val">03-3224-5000</span></div>
+      </div></div>
+      <div class="card"><div class="card-label">Key Addresses</div><div class="card-body">
+        <div class="address-block"><div class="addr-place">Cava House Hotel</div><div class="addr-local">東京都新宿区新宿１丁目２９−１</div><div class="addr-en">1-29-1 Shinjuku, Shinjuku City</div></div>
+        <div class="address-block"><div class="addr-place">Shibuya Crossing</div><div class="addr-local">渋谷スクランブル交差点</div><div class="addr-en">2-1 Dogenzaka, Shibuya-ku</div></div>
+        <div class="address-block"><div class="addr-place">Sensō-ji Temple</div><div class="addr-local">浅草寺 · 台東区浅草２丁目３−１</div><div class="addr-en">2-3-1 Asakusa, Taito-ku</div></div>
+        <div class="address-block"><div class="addr-place">Tokyo Skytree</div><div class="addr-local">東京スカイツリー · 墨田区押上１丁目１−２</div><div class="addr-en">1-1-2 Oshiage, Sumida-ku</div></div>
+        <div class="address-block"><div class="addr-place">teamLab Planets</div><div class="addr-local">チームラボプラネッツ · 江東区豊洲6丁目1-16</div><div class="addr-en">6-1-16 Toyosu, Koto-ku</div></div>
+        <div class="address-block"><div class="addr-place">Narita Airport (NRT)</div><div class="addr-local">成田国際空港</div><div class="addr-en">1-1 Furugome, Narita, Chiba</div></div>
+      </div></div>
+      <div class="card"><div class="card-label">Useful Phrases</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Help!</span><span class="en-val">助けて！(Tasukete!)</span></div>
+        <div class="emergency-num"><span class="en-label">Where is...?</span><span class="en-val">〜はどこですか？</span></div>
+        <div class="emergency-num"><span class="en-label">How much?</span><span class="en-val">いくらですか？</span></div>
+        <div class="emergency-num"><span class="en-label">Thank you</span><span class="en-val">ありがとう</span></div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SEOUL ══ -->
+<div class="screen" id="screen-seoul">
+  <div class="header">
+    <div class="header-top"><div class="header-city">Seoul 🏯</div><div class="city-flag">🇰🇷</div></div>
+    <div class="header-dates">Jun 7 – 10 · Arrive ICN 11:25 AM · Depart 2:05 PM</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('seoul','itinerary',this)">Itinerary</div>
+    <div class="tab" onclick="switchTab('seoul','food',this)">Food</div>
+    <div class="tab" onclick="switchTab('seoul','transport',this)">Transport</div>
+    <div class="tab" onclick="switchTab('seoul','hotel',this)">Hotel</div>
+    <div class="tab" onclick="switchTab('seoul','emergency',this)">Emergency</div>
+  </div>
+  <div class="content">
+
+    <div class="tab-panel active" id="seoul-itinerary">
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">1</div><div class="day-info"><div class="day-title">Arrival & Myeongdong</div><div class="day-sub">Jun 7 · Arrive ICN 11:25 AM</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">11:25 AM</div><div class="stop-content"><div class="stop-name">Arrive ICN</div><div class="stop-note">Get T-money cards at the airport. Take AREX train to city (~45 min to Seoul Station). Check in at Oriens Hotel — earliest 3 PM, store luggage if early.</div></div></div>
+          <div class="stop"><div class="stop-time">3:00 PM</div><div class="stop-content"><div class="stop-name">Myeongdong Street Food</div><div class="stop-note">The hotel is right in Myeongdong. Tteokbokki (spicy rice cakes), Korean fried chicken, hotteok pancakes, corn dogs. Just walk and eat.</div></div></div>
+          <div class="stop"><div class="stop-time">5:00 PM</div><div class="stop-content"><div class="stop-name">Gyeongbokgung Palace</div><div class="stop-note">Korea's most iconic palace. Free to enter with hanbok rental. Changing of the guard ceremony at 10 AM and 2 PM daily. Beautiful grounds.</div></div></div>
+          <div class="stop"><div class="stop-time">7:30 PM</div><div class="stop-content"><div class="stop-name">Korean BBQ Dinner</div><div class="stop-note">Samgyeopsal (pork belly) or galbi (short ribs) — grill at the table. Mapo-gu and Hongdae area have great affordable options.</div></div></div>
+        </div>
+      </div>
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">2</div><div class="day-info"><div class="day-title">Hongdae, Han River & Gangnam</div><div class="day-sub">Jun 8 · Youth culture + city vibes</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">10:00 AM</div><div class="stop-content"><div class="stop-name">Hongdae</div><div class="stop-note">Korea's youth culture hub. Street performers, cafes, vintage shops, arcade (Time Escape). Buy snacks and explore.</div></div></div>
+          <div class="stop"><div class="stop-time">1:00 PM</div><div class="stop-content"><div class="stop-name">Han River Park (Yeouido)</div><div class="stop-note">Grab convenience store food and eat by the river. Rent bikes along the Han River path. Great chill break mid-day.</div></div></div>
+          <div class="stop"><div class="stop-time">4:00 PM</div><div class="stop-content"><div class="stop-name">Gangnam / COEX Mall</div><div class="stop-note">COEX has the insane Starfield Library (free, incredible for photos). Browse the massive underground mall.</div></div></div>
+          <div class="stop"><div class="stop-time">7:00 PM</div><div class="stop-content"><div class="stop-name">Chicken & Beer (Chimaek)</div><div class="stop-note">Korean fried chicken + beer (or soda) is a religion here. Any local chimaek spot. Try Pelicana or Goobne if you want a chain.</div></div></div>
+        </div>
+      </div>
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header"><div class="day-num">3</div><div class="day-info"><div class="day-title">N Seoul Tower + Insadong · Pack</div><div class="day-sub">Jun 9 · Views + culture · ⚠️ Flight tomorrow</div></div><div class="day-chevron">›</div></div>
+        <div class="day-body">
+          <div class="stop"><div class="stop-time">10:00 AM</div><div class="stop-content"><div class="stop-name">Insadong</div><div class="stop-note">Traditional arts district: indie cafes, Korean snacks, pottery, cute shops. Try bingsu (shaved ice) here.</div></div></div>
+          <div class="stop"><div class="stop-time">12:30 PM</div><div class="stop-content"><div class="stop-name">Bukchon Hanok Village</div><div class="stop-note">Traditional Korean houses (hanok) on a hillside. Great photos. Short walk from Insadong. Quiet and scenic.</div></div></div>
+          <div class="stop"><div class="stop-time">3:00 PM</div><div class="stop-content"><div class="stop-name">N Seoul Tower (Namsan)</div><div class="stop-note">Take the cable car up for 360° city views. Famous for the "love locks." Great at dusk. ~₩16,000 for tower entry.</div></div></div>
+          <div class="stop"><div class="stop-time">8:00 PM</div><div class="stop-content"><div class="stop-name">🚨 Hotel. Pack. Early Night.</div><div class="stop-note">Flight to CKG is 2:05 PM Jun 10. Check out latest 12:00 PM. Leave hotel by 10:30 AM.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="seoul-food">
+      <div class="food-card"><div class="food-emoji">🥩</div><div class="food-info"><div class="food-name">Korean BBQ</div><div class="food-local">삼겹살 / 갈비</div><div class="food-desc">Grill pork belly (samgyeopsal) or beef short ribs (galbi) at the table. Wrap in lettuce with garlic and sauce. Go to a local spot over chains.</div><span class="food-tag">₩15,000–25,000/person</span></div></div>
+      <div class="food-card"><div class="food-emoji">🌶️</div><div class="food-info"><div class="food-name">Tteokbokki</div><div class="food-local">떡볶이</div><div class="food-desc">Spicy chewy rice cakes in gochujang sauce. Street food staple. Myeongdong is full of stalls selling it for ₩3,000–5,000.</div><span class="food-tag">₩3,000–5,000</span><span class="food-tag">Street Food</span></div></div>
+      <div class="food-card"><div class="food-emoji">🍗</div><div class="food-info"><div class="food-name">Korean Fried Chicken</div><div class="food-local">치킨 (Chimaek)</div><div class="food-desc">Double-fried, impossibly crispy. Order yangnyeom (sweet+spicy glazed) or honey butter. Best eaten with soda. Everywhere.</div><span class="food-tag">₩18,000–25,000/portion</span></div></div>
+      <div class="food-card"><div class="food-emoji">🌭</div><div class="food-info"><div class="food-name">Korean Corn Dog</div><div class="food-local">핫도그</div><div class="food-desc">Stretchy mozzarella corn dog rolled in sugar, dipped in ketchup/mustard. Myeongdong street food essential. ₩3,000–5,000.</div><span class="food-tag">₩3,000–5,000</span><span class="food-tag">Myeongdong</span></div></div>
+      <div class="food-card"><div class="food-emoji">🍧</div><div class="food-info"><div class="food-name">Bingsu</div><div class="food-local">빙수</div><div class="food-desc">Korean shaved ice dessert piled high with toppings — red bean, mango, strawberry, condensed milk. Perfect for Seoul's hot June weather.</div><span class="food-tag">₩10,000–18,000</span><span class="food-tag">Dessert</span></div></div>
+    </div>
+
+    <div class="tab-panel" id="seoul-transport">
+      <div class="card"><div class="card-label">First Thing at ICN</div><div class="card-title">Get T-money Cards</div><div class="card-body">Buy at airport convenience store (GS25 or CU) or any T-money machine. Load ₩20,000–30,000. Works on all Seoul Metro lines and buses. Tap in and out.</div></div>
+      <div class="card"><div class="card-label">Airport → City</div><div class="card-title">AREX Train</div><div class="card-body">Airport Railroad Express from ICN T1. ~45 min to Seoul Station (direct) or ~66 min (all-stop). About ₩9,500 direct. Use T-money card.</div></div>
+      <div class="card"><div class="card-label">Getting Around</div><div class="card-body">
+        <div class="transport-row"><div class="transport-icon">🚇</div><div class="transport-info"><div class="transport-title">Seoul Metro</div><div class="transport-desc">Extensive, cheap, clean. Signage in English. Most rides ₩1,400–2,000. Google Maps or Naver Maps for routing.</div></div></div>
+        <div class="transport-row"><div class="transport-icon">🚕</div><div class="transport-info"><div class="transport-title">Kakao T</div><div class="transport-desc">Korea's Uber. Download Kakao T app. Taxis are cheap and safe. Most drivers use translation apps.</div></div></div>
+      </div></div>
+      <div class="card"><div class="card-label">⚠️ Departure Day · Jun 10</div><div class="card-title">Leave Hotel by 10:30 AM</div><div class="card-body">Flight CKG is 2:05 PM. Check out latest 12:00 PM. AREX from Seoul Station ~45 min. Arrive ICN by 12:30 PM minimum.</div></div>
+    </div>
+
+    <div class="tab-panel" id="seoul-hotel">
+      <div class="hotel-card">
+        <div class="card-label">Your Hotel</div>
+        <div class="hotel-name">Oriens Hotel & Residences</div>
+        <div class="hotel-address">50 Samil-daero 2-gil, Jung-gu, Seoul</div>
+        <div class="hotel-address-local">서울 중구 삼일대로2길 50</div>
+        <div class="hotel-meta">
+          <span class="hotel-tag">Check-in Jun 7 · 3:00 PM earliest</span>
+          <span class="hotel-tag">Check-out Jun 10 · 12:00 PM latest</span>
+          <span class="hotel-tag">⭐ 4.2 · Myeongdong</span>
+        </div>
+        <div class="hotel-note">Apartment-style with full kitchen and washer. Spacious rooms for a group. Right in Myeongdong — step outside and you're in the food + shopping district. Near Namsangol Hanok Village.<br><br>📞 +82 2-2280-8000</div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="seoul-emergency">
+      <div class="card"><div class="card-label">Emergency Numbers</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Police</span><span class="en-val">112</span></div>
+        <div class="emergency-num"><span class="en-label">Ambulance / Fire</span><span class="en-val">119</span></div>
+        <div class="emergency-num"><span class="en-label">Tourist Helpline (EN)</span><span class="en-val">1330</span></div>
+        <div class="emergency-num"><span class="en-label">US Embassy Seoul</span><span class="en-val">02-397-4114</span></div>
+      </div></div>
+      <div class="card"><div class="card-label">Key Addresses</div><div class="card-body">
+        <div class="address-block"><div class="addr-place">Oriens Hotel</div><div class="addr-local">서울 중구 삼일대로2길 50</div><div class="addr-en">50 Samil-daero 2-gil, Jung-gu</div></div>
+        <div class="address-block"><div class="addr-place">Gyeongbokgung Palace</div><div class="addr-local">경복궁 · 서울 종로구 사직로 161</div><div class="addr-en">161 Sajik-ro, Jongno-gu, Seoul</div></div>
+        <div class="address-block"><div class="addr-place">Myeongdong</div><div class="addr-local">명동 · 서울 중구 명동</div><div class="addr-en">Myeong-dong, Jung-gu, Seoul</div></div>
+        <div class="address-block"><div class="addr-place">Incheon Airport (ICN)</div><div class="addr-local">인천국제공항</div><div class="addr-en">272 Gonghang-ro, Jung-gu, Incheon</div></div>
+      </div></div>
+      <div class="card"><div class="card-label">Useful Phrases</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Help!</span><span class="en-val">도와주세요!</span></div>
+        <div class="emergency-num"><span class="en-label">Where is...?</span><span class="en-val">...어디에요?</span></div>
+        <div class="emergency-num"><span class="en-label">How much?</span><span class="en-val">얼마예요?</span></div>
+        <div class="emergency-num"><span class="en-label">Thank you</span><span class="en-val">감사합니다</span></div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CHONGQING ══ -->
+<div class="screen" id="screen-chongqing">
+  <div class="header">
+    <div class="header-top"><div class="header-city">Chongqing 🌶️</div><div class="city-flag">🇨🇳</div></div>
+    <div class="header-dates">Jun 10 – 14 · Arrive CKG 4:55 PM · Depart Gaotie AM</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('chongqing','itinerary',this)">Itinerary</div>
+    <div class="tab" onclick="switchTab('chongqing','food',this)">Food</div>
+    <div class="tab" onclick="switchTab('chongqing','transport',this)">Transport</div>
+    <div class="tab" onclick="switchTab('chongqing','hotel',this)">Hotel</div>
+    <div class="tab" onclick="switchTab('chongqing','emergency',this)">Emergency</div>
+  </div>
+  <div class="content">
+    <div class="tab-panel active" id="chongqing-itinerary">
+      <div class="placeholder"><div class="placeholder-icon">🗺️</div><div class="placeholder-title">Itinerary Coming Soon</div><div class="placeholder-text">Add your Chongqing plan here. 4 nights, Jun 10–14. Must-dos: Hongya Cave, Jiefangbei, Ciqikou Old Town, Liziba Station (Line 2 through a building).</div></div>
+    </div>
+    <div class="tab-panel" id="chongqing-food">
+      <div class="food-card"><div class="food-emoji">🫕</div><div class="food-info"><div class="food-name">Chongqing Hot Pot</div><div class="food-local">重庆火锅</div><div class="food-desc">Birthplace of mala hot pot. Numbing + spicy broth (málà). Start medium if not used to it. Local chains: Dezhuang (德庄), Qin Ma (秦妈).</div><span class="food-tag">¥60–120/person</span><span class="food-tag">Must-Eat</span></div></div>
+      <div class="food-card"><div class="food-emoji">🍜</div><div class="food-info"><div class="food-name">Xiaomian Noodles</div><div class="food-local">重庆小面</div><div class="food-desc">Chongqing's famous spicy noodles. Cheap, filling, eaten for breakfast by locals. Any tiny noodle shop will do — look for ones packed with locals.</div><span class="food-tag">¥8–15</span><span class="food-tag">Breakfast</span></div></div>
+      <div class="food-card"><div class="food-emoji">🥢</div><div class="food-info"><div class="food-name">Jiefangbei Street Food</div><div class="food-local">解放碑步行街</div><div class="food-desc">The main pedestrian plaza has stalls and restaurants all around. Good for snacking around — grilled skewers, cold noodles, street desserts.</div><span class="food-tag">¥5–30/item</span></div></div>
+    </div>
+    <div class="tab-panel" id="chongqing-transport">
+      <div class="card"><div class="card-label">⚠️ China Essentials</div><div class="card-title">WeChat Pay + Alipay</div><div class="card-body">Nearly everything in China is cashless QR-code payment. Must be set up <strong>before entering China</strong> — both apps now support foreign Visa/Mastercard. Bring some RMB cash as backup for small vendors.</div></div>
+      <div class="card"><div class="card-label">Getting Around</div><div class="card-body">
+        <div class="transport-row"><div class="transport-icon">🚇</div><div class="transport-info"><div class="transport-title">Chongqing Rail Transit</div><div class="transport-desc">Metro covers the city. Pay with WeChat/Alipay QR. Line 2 famously runs through Liziba residential building — worth riding.</div></div></div>
+        <div class="transport-row"><div class="transport-icon">🚕</div><div class="transport-info"><div class="transport-title">DiDi</div><div class="transport-desc">Chinese Uber. Download DiDi app. Pay with WeChat Pay. Show destination in Chinese on maps — drivers usually speak no English.</div></div></div>
+      </div></div>
+      <div class="card"><div class="card-label">⚠️ Departure · Jun 14 Morning</div><div class="card-title">Gaotie to Zhangjiajie</div><div class="card-body">High-speed train from <strong>Chongqing North Station (重庆北)</strong>. ~4–5 hours. Book on Trip.com with all 5 passport numbers. Passport required at gate. Leave hotel early — confirm train time when booking.</div></div>
+    </div>
+    <div class="tab-panel" id="chongqing-hotel">
+      <div class="hotel-card">
+        <div class="card-label">Your Hotel</div>
+        <div class="hotel-name">Da Ji Jun Ting Design Hotel</div>
+        <div class="hotel-address">Yuzhong District, Chongqing</div>
+        <div class="hotel-address-local">重庆市渝中区</div>
+        <div class="hotel-meta">
+          <span class="hotel-tag">Check-in Jun 10 · Arrive ~6 PM</span>
+          <span class="hotel-tag">Check-out Jun 14 · Early for train</span>
+        </div>
+        <div class="hotel-note">Boutique design hotel in central Chongqing. Walking distance to Jiefangbei and Hongya Cave area.<br><br>⚠️ Show passport at hotel check-in — required by law in China.</div>
+      </div>
+    </div>
+    <div class="tab-panel" id="chongqing-emergency">
+      <div class="card"><div class="card-label">Emergency Numbers</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Police</span><span class="en-val">110</span></div>
+        <div class="emergency-num"><span class="en-label">Ambulance</span><span class="en-val">120</span></div>
+        <div class="emergency-num"><span class="en-label">Fire</span><span class="en-val">119</span></div>
+        <div class="emergency-num"><span class="en-label">US Consulate Chengdu</span><span class="en-val">028-8555-1992</span></div>
+      </div></div>
+      <div class="card"><div class="card-label">Key Addresses</div><div class="card-body">
+        <div class="address-block"><div class="addr-place">Hongya Cave</div><div class="addr-local">洪崖洞民俗风貌区</div><div class="addr-en">88 Cangbai Rd, Jiangbei District</div></div>
+        <div class="address-block"><div class="addr-place">Jiefangbei</div><div class="addr-local">解放碑步行街</div><div class="addr-en">Jiefangbei Pedestrian Street, Yuzhong District</div></div>
+        <div class="address-block"><div class="addr-place">Chongqing North Station</div><div class="addr-local">重庆北站</div><div class="addr-en">Yubei District, Chongqing (for high-speed trains)</div></div>
+        <div class="address-block"><div class="addr-place">CKG Airport</div><div class="addr-local">重庆江北国际机场</div><div class="addr-en">Yubei District, Chongqing</div></div>
+      </div></div>
+      <div class="card"><div class="card-label">Useful Phrases</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Help!</span><span class="en-val">救命！(Jiùmìng!)</span></div>
+        <div class="emergency-num"><span class="en-label">Where is...?</span><span class="en-val">...在哪里？</span></div>
+        <div class="emergency-num"><span class="en-label">How much?</span><span class="en-val">多少钱？(Duōshao qián?)</span></div>
+        <div class="emergency-num"><span class="en-label">Thank you</span><span class="en-val">谢谢 (Xièxiè)</span></div>
+        <div class="emergency-num"><span class="en-label">Not spicy please</span><span class="en-val">不要辣 (Bú yào là)</span></div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ZHANGJIAJIE ══ -->
+<div class="screen" id="screen-zhangjiajie">
+  <div class="header">
+    <div class="header-top"><div class="header-city">Zhangjiajie 🏔️</div><div class="city-flag">🇨🇳</div></div>
+    <div class="header-dates">Jun 14 – 17 · Arrive by train · Depart DYG 11:00 AM</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('zhangjiajie','itinerary',this)">Itinerary</div>
+    <div class="tab" onclick="switchTab('zhangjiajie','food',this)">Food</div>
+    <div class="tab" onclick="switchTab('zhangjiajie','transport',this)">Transport</div>
+    <div class="tab" onclick="switchTab('zhangjiajie','hotel',this)">Hotel</div>
+    <div class="tab" onclick="switchTab('zhangjiajie','emergency',this)">Emergency</div>
+  </div>
+  <div class="content">
+    <div class="tab-panel active" id="zhangjiajie-itinerary">
+      <div class="placeholder"><div class="placeholder-icon">🗺️</div><div class="placeholder-title">Itinerary Coming Soon</div><div class="placeholder-text">3 nights Jun 14–17. Plan: Bailong Elevator, Avatar mountains, Tianmen Mountain glass walkway, cable cars. Hotel is 10 min walk from East Gate of the park.</div></div>
+    </div>
+    <div class="tab-panel" id="zhangjiajie-food">
+      <div class="placeholder"><div class="placeholder-icon">🍲</div><div class="placeholder-title">Add Food Spots</div><div class="placeholder-text">Hunan cuisine — spicy! Local restaurants near the park entrance. Hotel can help book tickets and suggest food nearby.</div></div>
+    </div>
+    <div class="tab-panel" id="zhangjiajie-transport">
+      <div class="card"><div class="card-label">Arrival · Jun 14</div><div class="card-title">By Gaotie from Chongqing</div><div class="card-body">~4–5 hour high-speed train. Arriving at <strong>Zhangjiajie Station (张家界站)</strong>. Take DiDi to hotel (~15 min). Manyuan Resort is a 10-min walk to park East Gate.</div></div>
+      <div class="card"><div class="card-label">Inside the Park</div><div class="card-body">
+        <div class="transport-row"><div class="transport-icon">🚡</div><div class="transport-info"><div class="transport-title">Bailong Elevator (百龙天梯)</div><div class="transport-desc">World's tallest outdoor elevator — 326m up a cliff face. Included with park entry. Go early to avoid queues.</div></div></div>
+        <div class="transport-row"><div class="transport-icon">🚠</div><div class="transport-info"><div class="transport-title">Cable Cars</div><div class="transport-desc">Multiple cable car routes across the park. Tianmen Mountain has the longest cable car in the world (~7.5 km).</div></div></div>
+        <div class="transport-row"><div class="transport-icon">🚌</div><div class="transport-info"><div class="transport-title">Free Shuttle Buses</div><div class="transport-desc">Included with park ticket. Connect all major areas. Pick up a route map at the gate.</div></div></div>
+      </div></div>
+      <div class="card"><div class="card-label">⚠️ Departure · Jun 17</div><div class="card-title">Flight DYG → XIY at 11:00 AM</div><div class="card-body">Zhangjiajie Hehua Airport (DYG) is small. Leave hotel by <strong>8:30 AM</strong>. DiDi to airport ~30 min. Check in at least 90 min before for domestic China flight. Passport required.</div></div>
+    </div>
+    <div class="tab-panel" id="zhangjiajie-hotel">
+      <div class="hotel-card">
+        <div class="card-label">Your Hotel</div>
+        <div class="hotel-name">Manyuan Resort Hotel</div>
+        <div class="hotel-address">Wulingyuan District, Zhangjiajie, Hunan</div>
+        <div class="hotel-address-local">湖南省张家界市武陵源区</div>
+        <div class="hotel-meta">
+          <span class="hotel-tag">Check-in Jun 14 · Evening</span>
+          <span class="hotel-tag">Check-out Jun 17 · By 8:30 AM</span>
+          <span class="hotel-tag">⭐ 4.5 · 10 min to East Gate</span>
+        </div>
+        <div class="hotel-note">10-minute walk to East Gate of Zhangjiajie National Forest Park. Staff gives excellent trail advice and can buy park tickets for you. Free laundry service. Highly rated for helpfulness.<br><br>📞 +86 744 551 9888</div>
+      </div>
+    </div>
+    <div class="tab-panel" id="zhangjiajie-emergency">
+      <div class="card"><div class="card-label">Emergency Numbers</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Police</span><span class="en-val">110</span></div>
+        <div class="emergency-num"><span class="en-label">Ambulance</span><span class="en-val">120</span></div>
+        <div class="emergency-num"><span class="en-label">Park Emergency</span><span class="en-val">0744-5716-1234</span></div>
+        <div class="emergency-num"><span class="en-label">US Consulate Chengdu</span><span class="en-val">028-8555-1992</span></div>
+      </div></div>
+      <div class="card"><div class="card-label">Key Addresses</div><div class="card-body">
+        <div class="address-block"><div class="addr-place">Manyuan Resort Hotel</div><div class="addr-local">漫苑度假酒店 · 张家界市武陵源区</div><div class="addr-en">Wulingyuan District, Zhangjiajie</div></div>
+        <div class="address-block"><div class="addr-place">Zhangjiajie National Forest Park</div><div class="addr-local">张家界国家森林公园</div><div class="addr-en">Zhangjiajie City, Hunan Province</div></div>
+        <div class="address-block"><div class="addr-place">Tianmen Mountain</div><div class="addr-local">天门山国家森林公园</div><div class="addr-en">Tianmen Mountain National Park, Zhangjiajie</div></div>
+        <div class="address-block"><div class="addr-place">DYG Airport</div><div class="addr-local">张家界荷花国际机场</div><div class="addr-en">Zhangjiajie Hehua International Airport</div></div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ XI'AN ══ -->
+<div class="screen" id="screen-xian">
+  <div class="header">
+    <div class="header-top"><div class="header-city">Xi'an 🏛️</div><div class="city-flag">🇨🇳</div></div>
+    <div class="header-dates">Jun 17 – 20 · Arrive XIY ~1 PM · Last stop!</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('xian','itinerary',this)">Itinerary</div>
+    <div class="tab" onclick="switchTab('xian','food',this)">Food</div>
+    <div class="tab" onclick="switchTab('xian','transport',this)">Transport</div>
+    <div class="tab" onclick="switchTab('xian','emergency',this)">Emergency</div>
+  </div>
+  <div class="content">
+    <div class="tab-panel active" id="xian-itinerary">
+      <div class="card"><div class="card-label">The Big One</div><div class="card-title">Terracotta Warriors</div><div class="card-body">8,000+ life-sized clay soldiers — one of the greatest archaeological sites in the world. ~1 hr from city by DiDi (~¥60–80). Go early (8 AM). Allow 3–4 hours minimum.</div></div>
+      <div class="card"><div class="card-label">Also Must-Do</div><div class="card-body"><strong>City Wall (城墙):</strong> Rent bikes and ride the top of the 14km ancient city wall. Incredible views.<br><br><strong>Muslim Quarter (回民街):</strong> The most insane street food market. Go hungry at night.</div></div>
+      <div class="placeholder"><div class="placeholder-icon">🗺️</div><div class="placeholder-title">Add Full Day-by-Day Plan</div><div class="placeholder-text">3 nights, Jun 17–20. Terracotta Warriors, City Wall biking, Muslim Quarter, Big Goose Pagoda, Tang Paradise show.</div></div>
+    </div>
+    <div class="tab-panel" id="xian-food">
+      <div class="food-card"><div class="food-emoji">🍢</div><div class="food-info"><div class="food-name">Muslim Quarter</div><div class="food-local">回民街 · Huimin Jie</div><div class="food-desc">The must-visit food street. Roujiamo, yangrou paomo, fried persimmon cakes, cold noodles. Go at night when fully buzzing.</div><span class="food-tag">¥5–30/item</span><span class="food-tag">Cash</span></div></div>
+      <div class="food-card"><div class="food-emoji">🫓</div><div class="food-info"><div class="food-name">Roujiamo</div><div class="food-local">肉夹馍 · Xi'an Burger</div><div class="food-desc">Slow-braised pork stuffed in flatbread. Xi'an's most famous street food. ¥10–15 and completely worth it.</div><span class="food-tag">¥10–15</span><span class="food-tag">Don't Skip</span></div></div>
+      <div class="food-card"><div class="food-emoji">🍝</div><div class="food-info"><div class="food-name">Biang Biang Noodles</div><div class="food-local">biángbiáng面</div><div class="food-desc">Wide, belt-like noodles topped with chili oil, garlic, and vegetables. The character 'biang' is one of the most complex in Chinese. Must-try in Xi'an.</div><span class="food-tag">¥15–25</span></div></div>
+    </div>
+    <div class="tab-panel" id="xian-transport">
+      <div class="card"><div class="card-label">Arrival · Jun 17</div><div class="card-title">Flight from DYG ~11 AM</div><div class="card-body">Arrive XIY ~1 PM. Take Xi'an Metro Airport Line → Line 2 to city center (~40 min, ~¥6). Or DiDi from airport (~¥80–100, ~40 min).</div></div>
+      <div class="card"><div class="card-label">Getting Around</div><div class="card-body">
+        <div class="transport-row"><div class="transport-icon">🚇</div><div class="transport-info"><div class="transport-title">Xi'an Metro</div><div class="transport-desc">Covers major tourist areas. Pay by WeChat/Alipay QR. Line 2 connects downtown to train station area.</div></div></div>
+        <div class="transport-row"><div class="transport-icon">🚕</div><div class="transport-info"><div class="transport-title">DiDi to Terracotta Warriors</div><div class="transport-desc">~¥60–80 one way, ~50 min from city center. Much easier than tourist bus for a group.</div></div></div>
+      </div></div>
+    </div>
+    <div class="tab-panel" id="xian-emergency">
+      <div class="card"><div class="card-label">Emergency Numbers</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Police</span><span class="en-val">110</span></div>
+        <div class="emergency-num"><span class="en-label">Ambulance</span><span class="en-val">120</span></div>
+        <div class="emergency-num"><span class="en-label">US Consulate Chengdu</span><span class="en-val">028-8555-1992</span></div>
+      </div></div>
+      <div class="card"><div class="card-label">Key Addresses</div><div class="card-body">
+        <div class="address-block"><div class="addr-place">Terracotta Warriors</div><div class="addr-local">秦始皇兵马俑博物馆</div><div class="addr-en">Lintong District, Xi'an, Shaanxi</div></div>
+        <div class="address-block"><div class="addr-place">Muslim Quarter</div><div class="addr-local">回民街 · 莲湖区回民街</div><div class="addr-en">Huimin Jie, Lianhu District, Xi'an</div></div>
+        <div class="address-block"><div class="addr-place">Xi'an City Wall</div><div class="addr-local">西安城墙</div><div class="addr-en">Heping Gate, Beilin District, Xi'an</div></div>
+        <div class="address-block"><div class="addr-place">XIY Airport</div><div class="addr-local">西安咸阳国际机场</div><div class="addr-en">Xianyang City, Shaanxi Province</div></div>
+      </div></div>
+      <div class="card"><div class="card-label">Useful Phrases</div><div class="card-body">
+        <div class="emergency-num"><span class="en-label">Help!</span><span class="en-val">救命！(Jiùmìng!)</span></div>
+        <div class="emergency-num"><span class="en-label">Where is...?</span><span class="en-val">...在哪里？</span></div>
+        <div class="emergency-num"><span class="en-label">How much?</span><span class="en-val">多少钱？</span></div>
+        <div class="emergency-num"><span class="en-label">Thank you</span><span class="en-val">谢谢 (Xièxiè)</span></div>
+        <div class="emergency-num"><span class="en-label">Not spicy please</span><span class="en-val">不要辣 (Bú yào là)</span></div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="goToScreen('home')"><div class="nav-icon">🏠</div><div class="nav-label">Home</div><div class="nav-dot"></div></div>
+  <div class="nav-item" id="nav-tokyo" onclick="goToScreen('tokyo')"><div class="nav-icon">🗼</div><div class="nav-label">Tokyo</div><div class="nav-dot"></div></div>
+  <div class="nav-item" id="nav-seoul" onclick="goToScreen('seoul')"><div class="nav-icon">🏯</div><div class="nav-label">Seoul</div><div class="nav-dot"></div></div>
+  <div class="nav-item" id="nav-chongqing" onclick="goToScreen('chongqing')"><div class="nav-icon">🌶️</div><div class="nav-label">CQ</div><div class="nav-dot"></div></div>
+  <div class="nav-item" id="nav-zhangjiajie" onclick="goToScreen('zhangjiajie')"><div class="nav-icon">🏔️</div><div class="nav-label">ZJJ</div><div class="nav-dot"></div></div>
+  <div class="nav-item" id="nav-xian" onclick="goToScreen('xian')"><div class="nav-icon">🏛️</div><div class="nav-label">Xi'an</div><div class="nav-dot"></div></div>
+</nav>
+</div>
+
+<script>
+  function goToScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+    const content = document.querySelector('#screen-' + id + ' .content');
+    if (content) content.scrollTop = 0;
+  }
+  function goToCity(id) { goToScreen(id); }
+  function switchTab(city, tab, el) {
+    const screen = document.getElementById('screen-' + city);
+    screen.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    screen.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(city + '-' + tab).classList.add('active');
+    screen.querySelector('.content').scrollTop = 0;
+  }
+  function toggleDay(card) { card.classList.toggle('open'); }
+  function toggleCheck(item) { item.classList.toggle('done'); }
+</script>
+</body>
+</html>
