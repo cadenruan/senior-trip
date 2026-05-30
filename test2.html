@@ -182,7 +182,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font
       <div class="sec-lbl">Jump to City</div>
       <div class="cc" onclick="goToCity('tokyo')"><div class="cc-flag">🇯🇵</div><div style="flex:1"><div class="cc-name">Tokyo</div><div class="cc-dates">Jun 2–7 · 5 nights · Cava House, Shinjuku</div></div><div class="cc-arr">›</div></div>
       <div class="cc" onclick="goToCity('seoul')"><div class="cc-flag">🇰🇷</div><div style="flex:1"><div class="cc-name">Seoul</div><div class="cc-dates">Jun 7–10 · 3 nights · Oriens Hotel, Myeongdong</div></div><div class="cc-arr">›</div></div>
-      <div class="cc" onclick="goToCity('chongqing')"><div class="cc-flag">🇨🇳</div><div style="flex:1"><div class="cc-name">Chongqing</div><div class="cc-dates">Jun 10–14 · 4 nights · Da Ji Jun Ting Hotel</div></div><div class="cc-arr">›</div></div>
+      <div class="cc" onclick="goToCity('chongqing')"><div class="cc-flag">🇨🇳</div><div style="flex:1"><div class="cc-name">Chongqing</div><div class="cc-dates">Jun 10–14 · 4 nights · Pagoda Hotel</div></div><div class="cc-arr">›</div></div>
       <div class="cc" onclick="goToCity('zhangjiajie')"><div class="cc-flag">🇨🇳</div><div style="flex:1"><div class="cc-name">Zhangjiajie</div><div class="cc-dates">Jun 14–17 · 3 nights · Manyuan Resort</div></div><div class="cc-arr">›</div></div>
       <div class="cc" onclick="goToCity('xian')"><div class="cc-flag">🇨🇳</div><div style="flex:1"><div class="cc-name">Xi'an</div><div class="cc-dates">Jun 17–20 · 3 nights</div></div><div class="cc-arr">›</div></div>
       <div class="sec-lbl">Good to Know</div>
@@ -661,85 +661,321 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font
 
 <!-- SEOUL -->
 <div class="screen" id="screen-seoul">
-  <div class="hdr"><div class="hdr-top"><div class="hdr-city">Seoul 🏯</div><div style="font-size:22px">🇰🇷</div></div><div class="hdr-dates">Jun 7–10 · Arrive ICN 11:25 AM · Depart 2:05 PM</div></div>
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('seoul','itinerary',this)">Itinerary</div>
-    <div class="tab" onclick="switchTab('seoul','food',this)">Food</div>
-    <div class="tab" onclick="switchTab('seoul','transport',this)">Transport</div>
-    <div class="tab" onclick="switchTab('seoul','hotel',this)">Hotel</div>
-    <div class="tab" onclick="switchTab('seoul','emergency',this)">Emergency</div>
-  </div>
-  <div class="content">
-    <div class="tp active" id="seoul-itinerary">
-      <div class="dc open" onclick="toggleDay(this)">
-        <div class="dc-hdr"><div class="dc-num">1</div><div class="dc-info"><div class="dc-ttl">Arrival &amp; Myeongdong</div><div class="dc-sub">Jun 7 · Arrive ICN 11:25 AM</div></div><div class="dc-chev">›</div></div>
-        <div class="dc-body">
-          <div class="loc"><div class="loc-transit"><span>🚆</span> AREX from ICN T1 → Seoul Station · ¥9,500 · ~45 min direct · use T-money card</div><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Check In · Oriens Hotel</span><span class="loc-time">~1:30 PM</span></div><div class="loc-pills"><span class="pill warn">Get T-money card at airport first</span><span class="pill">Earliest check-in 3 PM · store luggage if early</span></div></div><div class="loc-body"><div class="bullet">Drop bags, sort yourselves out</div></div></div>
-          <div class="loc"><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Myeongdong Street Food</span><span class="loc-time">2:00 PM → 5:00 PM</span></div><div class="loc-pills"><span class="pill transit">Hotel is right in Myeongdong · walk outside</span></div></div><div class="loc-body"><div class="bullet">Tteokbokki, Korean corn dogs, hotteok pancakes, tornado potato</div><div class="bullet">Just walk and eat — no plan needed</div></div><div class="food-row"><strong>🌶️ Snack lunch:</strong> graze the whole street · budget ₩10,000–20,000 and just try everything</div></div>
-          <div class="loc"><div class="loc-transit"><span>🚆</span> Seoul Metro Line 3 from Myeongdong → Gyeongbokgung · ~15 min · ₩1,400</div><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Gyeongbokgung Palace</span><span class="loc-time">5:00 PM → 7:00 PM</span></div><div class="loc-pills"><span class="pill">Free with hanbok rental</span><span class="pill">Changing of guard 2 PM &amp; 10 AM daily</span></div></div><div class="loc-body"><div class="bullet">Korea's most iconic palace — beautiful grounds</div><div class="bullet">Rent a hanbok (traditional clothes) at the entrance — makes for great photos and gets you in free</div></div></div>
-          <div class="loc"><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Korean BBQ Dinner</span><span class="loc-time">7:30 PM → 9:00 PM</span></div></div><div class="loc-body"><div class="bullet">Samgyeopsal (pork belly) or galbi (short ribs) — grill at the table yourself</div><div class="bullet">Any local spot near Myeongdong or Mapo area</div></div><div class="food-row"><strong>🥩 Dinner:</strong> ₩15,000–25,000 per person · order banchan (side dishes) — they're free refills</div></div>
+    <div class="hdr">
+      <div class="hdr-top">
+        <div class="hdr-city">Seoul 🏯</div>
+        <div style="font-size:22px">🇰🇷</div>
+      </div>
+      <div class="hdr-dates">Jun 7–10 · Arrive ICN 11:25 AM · Depart 2:05 PM</div>
+    </div>
+  
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('seoul','itinerary',this)">Itinerary</div>
+      <div class="tab" onclick="switchTab('seoul','food',this)">Food</div>
+      <div class="tab" onclick="switchTab('seoul','transport',this)">Transport</div>
+      <div class="tab" onclick="switchTab('seoul','hotel',this)">Hotel</div>
+      <div class="tab" onclick="switchTab('seoul','emergency',this)">Emergency</div>
+    </div>
+  
+    <div class="content">
+  
+      <!-- ITINERARY TAB -->
+      <div class="tp active" id="seoul-itinerary">
+  
+        <!-- DAY 1 -->
+        <div class="dc open" onclick="toggleDay(this)">
+          <div class="dc-hdr">
+            <div class="dc-num">1</div>
+            <div class="dc-info">
+              <div class="dc-ttl">Arrival &amp; Myeongdong</div>
+              <div class="dc-sub">Jun 7 · Arrive ICN 11:25 AM</div>
+            </div>
+            <div class="dc-chev">›</div>
+          </div>
+          <div class="dc-body">
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚆</span> AREX from ICN T1 → Seoul Station · ₩9,500 · ~45 min direct · use T-money card</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Check In · Oriens Hotel</span><span class="loc-time">~1:30 PM</span></div>
+                <div class="loc-pills"><span class="pill warn">Get T-money card at airport first</span><span class="pill">Earliest check-in 3 PM · store luggage if early</span></div>
+              </div>
+              <div class="loc-body"><div class="bullet">Drop bags, sort yourselves out</div></div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Myeongdong Street Food</span><span class="loc-time">2:00 PM → 5:00 PM</span></div>
+                <div class="loc-pills"><span class="pill transit">Hotel is right in Myeongdong · walk outside</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Tteokbokki, Korean corn dogs, hotteok pancakes, tornado potato</div>
+                <div class="bullet">Just walk and eat — no plan needed</div>
+              </div>
+              <div class="food-row"><strong>🌶️ Snack lunch:</strong> graze the whole street · budget ₩10,000–20,000 and just try everything</div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚆</span> Seoul Metro Line 3 from Myeongdong → Gyeongbokgung · ~15 min · ₩1,400</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Gyeongbokgung Palace</span><span class="loc-time">5:00 PM → 7:00 PM</span></div>
+                <div class="loc-pills"><span class="pill">Free with hanbok rental</span><span class="pill">Changing of guard 2 PM &amp; 10 AM daily</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Korea's most iconic palace — beautiful grounds</div>
+                <div class="bullet">Rent a hanbok at the entrance — makes for great photos and gets you in free</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Korean BBQ Dinner</span><span class="loc-time">7:30 PM → 9:00 PM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Samgyeopsal (pork belly) or galbi (short ribs) — grill at the table yourself</div>
+                <div class="bullet">Any local spot near Myeongdong or Mapo area</div>
+              </div>
+              <div class="food-row"><strong>🥩 Dinner:</strong> ₩15,000–25,000 per person · order banchan (side dishes) — they're free refills</div>
+            </div>
+  
+          </div>
+        </div>
+  
+        <!-- DAY 2 -->
+        <div class="dc" onclick="toggleDay(this)">
+          <div class="dc-hdr">
+            <div class="dc-num">2</div>
+            <div class="dc-info">
+              <div class="dc-ttl">Lotte World + Hongdae Night</div>
+              <div class="dc-sub">Jun 8 · Leave ~9:30 AM</div>
+            </div>
+            <div class="dc-chev">›</div>
+          </div>
+          <div class="dc-body">
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚆</span> Seoul Metro Line 2 → Jamsil · ~25 min · ₩1,600</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Lotte World</span><span class="loc-time">10:00 AM → 6:00 PM</span></div>
+                <div class="loc-pills"><span class="pill warn">Buy Magic Pass at entry — lines are 1–2 hrs without it</span><span class="pill">Opens 10 AM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Korea's massive indoor + outdoor amusement park</div>
+                <div class="bullet">Hit outdoor rides first (less crowded in the morning)</div>
+                <div class="bullet">Spend the full day — there's enough to fill it</div>
+              </div>
+              <div class="food-row"><strong>🍔 Lunch:</strong> food inside the park · budget ₩15,000–20,000 pp</div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚆</span> Seoul Metro to Hongik University · ~30 min</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">T1 Base Camp (PC Bang) · Hongdae</span><span class="loc-time">9:00 PM → late</span></div>
+                <div class="loc-pills"><span class="pill">Open 24 hrs</span><span class="pill">~₩6,000 / 5 hrs</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Faker's legendary esports base right in Hongdae</div>
+                <div class="bullet">RTX 4070 PCs — proper setup, not a casual cafe</div>
+                <div class="bullet">T1 merch store on-site</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Club FF · Hongdae</span><span class="loc-time">11:00 PM → late</span></div>
+                <div class="loc-pills"><span class="pill">4.9★ live music venue</span><span class="pill">Opens 6 PM Fri–Sun</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Top-rated live music venue in Hongdae — great energy</div>
+                <div class="bullet">Very welcoming to foreigners, always lively</div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+  
+        <!-- DAY 3 -->
+        <div class="dc" onclick="toggleDay(this)">
+          <div class="dc-hdr">
+            <div class="dc-num">3</div>
+            <div class="dc-info">
+              <div class="dc-ttl">Gangnam Day</div>
+              <div class="dc-sub">Jun 9 · ⚠️ Flight tomorrow · early night</div>
+            </div>
+            <div class="dc-chev">›</div>
+          </div>
+          <div class="dc-body">
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚆</span> Seoul Metro Line 3 to Anguk · ~15 min · ₩1,400</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Gyeongbokgung Palace</span><span class="loc-time">9:00 AM → 10:30 AM</span></div>
+                <div class="loc-pills"><span class="pill">Free with hanbok rental</span><span class="pill transit">Close to hotel — quick morning stop</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Quick morning visit — rent a hanbok at the gate for free entry</div>
+                <div class="bullet">Keep it to 90 mins, then head south to Gangnam</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚆</span> Seoul Metro Line 2 → Samseong · ~30 min · ₩1,600</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Bongeunsa Temple</span><span class="loc-time">11:30 AM → 12:15 PM</span></div>
+                <div class="loc-pills"><span class="pill">Free entry</span><span class="pill">1,200-year-old temple</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Ancient Buddhist temple right in the middle of Gangnam skyscrapers — wild contrast</div>
+                <div class="bullet">Relaxed wander through the grounds, 30–45 mins is plenty</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Starfield COEX Mall</span><span class="loc-time">12:30 PM → 3:00 PM</span></div>
+                <div class="loc-pills"><span class="pill transit">5-min walk from Bongeunsa</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Starfield Library — floor-to-ceiling bookshelves, one of the most-photographed spots in Seoul. Free.</div>
+                <div class="bullet">Massive underground mall — browse, wander, grab lunch in the food court</div>
+              </div>
+              <div class="food-row"><strong>🍜 Lunch:</strong> COEX food court · huge variety · ₩10,000–16,000 pp</div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">SMTOWN Museum · COEX</span><span class="loc-time">3:00 PM → 4:00 PM</span></div>
+                <div class="loc-pills"><span class="pill transit">Inside COEX Mall</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">K-pop costumes, sets, and interactive exhibits from SM Entertainment</div>
+                <div class="bullet">Even if you're not a K-pop fan — genuinely wild cultural experience</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚆</span> Seoul Metro Line 3 to Apgujeong · ~10 min</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Garosu-gil Street</span><span class="loc-time">4:30 PM → 6:00 PM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Gangnam's tree-lined indie street — boutiques, trendy cafes, way less touristy than Myeongdong</div>
+                <div class="bullet">Good for wandering, grabbing a snack, soaking up the neighbourhood</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Roof 808 · Rooftop Bar</span><span class="loc-time">Evening · tentative</span></div>
+                <div class="loc-pills"><span class="pill tentative">✦ Tentative — decide on the day</span><span class="pill">Opens 5 PM</span><span class="pill">4.5★ · city views</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Rooftop bar in Gangnam with great city views and food — solid sunset spot</div>
+                <div class="bullet">Skip if you're tired and want an early hotel night — totally fine either way</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Hotel · Early Night</span><span class="loc-time">9:00 PM</span></div>
+                <div class="loc-pills"><span class="pill warn">⚠️ Flight 2:05 PM · Check out by 12 PM · Leave hotel 10:30 AM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Pack tonight — early airport departure tomorrow</div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+  
+      </div><!-- end itinerary tab -->
+  
+      <!-- FOOD TAB -->
+      <div class="tp" id="seoul-food">
+        <div class="fc"><div class="fe">🥩</div><div><div class="fn">Korean BBQ</div><div class="fl">삼겹살 / 갈비</div><div class="fd">Grill pork belly or beef short ribs at the table. Wrap in lettuce with garlic and sauce. Order banchan side dishes — free refills.</div><span class="ft">₩15,000–25,000/person</span></div></div>
+        <div class="fc"><div class="fe">🌶️</div><div><div class="fn">Tteokbokki</div><div class="fl">떡볶이</div><div class="fd">Spicy chewy rice cakes in gochujang sauce. Street food staple all over Myeongdong.</div><span class="ft">₩3,000–5,000</span><span class="ft">Street food</span></div></div>
+        <div class="fc"><div class="fe">🍗</div><div><div class="fn">Korean Fried Chicken</div><div class="fl">치킨 (Chimaek)</div><div class="fd">Double-fried, impossibly crispy. Order yangnyeom (sweet+spicy glazed). Best with soda.</div><span class="ft">₩18,000–25,000/portion</span></div></div>
+        <div class="fc"><div class="fe">🌭</div><div><div class="fn">Korean Corn Dog</div><div class="fl">핫도그</div><div class="fd">Stretchy mozzarella corn dog rolled in sugar. Myeongdong street food essential.</div><span class="ft">₩3,000–5,000</span><span class="ft">Myeongdong</span></div></div>
+        <div class="fc"><div class="fe">🍧</div><div><div class="fn">Bingsu</div><div class="fl">빙수</div><div class="fd">Korean shaved ice piled high with toppings — red bean, mango, condensed milk. Perfect for hot June weather.</div><span class="ft">₩10,000–18,000</span></div></div>
+        <div class="fc"><div class="fe">🍜</div><div><div class="fn">Samgyeopsal</div><div class="fl">삼겹살</div><div class="fd">Thick-cut pork belly grilled at the table. Dip in sesame oil + salt, wrap in perilla leaf. The quintessential Korean group meal.</div><span class="ft">₩15,000–20,000/portion</span></div></div>
+      </div>
+  
+      <!-- TRANSPORT TAB -->
+      <div class="tp" id="seoul-transport">
+        <div class="card">
+          <div class="card-lbl">First Thing at ICN</div>
+          <div class="card-ttl">Get T-money Cards</div>
+          <div class="card-bod">Buy at airport GS25 or CU convenience store. Load ₩20,000–30,000. Works on all Seoul Metro and buses. Tap in and out.</div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Airport → City</div>
+          <div class="card-ttl">AREX Train</div>
+          <div class="card-bod">Airport Railroad from ICN T1. ~45 min to Seoul Station direct (~₩9,500). Use T-money card.</div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Getting Around</div>
+          <div class="card-bod">
+            <div class="tr-row"><div class="tr-icon">🚇</div><div><div class="tr-ttl">Seoul Metro</div><div class="tr-desc">Extensive, cheap, clean. Signs in English. Most rides ₩1,400–2,000. Use Naver Maps or Google Maps for routing.</div></div></div>
+            <div class="tr-row"><div class="tr-icon">🚕</div><div><div class="tr-ttl">Kakao T</div><div class="tr-desc">Korea's Uber. Download app before arriving. Taxis are cheap and safe — most drivers use translation apps.</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">⚠️ Departure · Jun 10</div>
+          <div class="card-ttl">Leave Hotel 10:30 AM</div>
+          <div class="card-bod">Flight is 2:05 PM. Check out by 12:00 PM. AREX to ICN ~45 min. Arrive airport by 12:30 PM minimum.</div>
         </div>
       </div>
-      <div class="dc" onclick="toggleDay(this)">
-        <div class="dc-hdr"><div class="dc-num">2</div><div class="dc-info"><div class="dc-ttl">Hongdae → Han River → Gangnam</div><div class="dc-sub">Jun 8 · Leave ~9:30 AM</div></div><div class="dc-chev">›</div></div>
-        <div class="dc-body">
-          <div class="loc"><div class="loc-transit"><span>🚆</span> Seoul Metro Line 2 from Myeongdong → Hongik University · ~20 min · ₩1,400</div><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Hongdae</span><span class="loc-time">10:00 AM → 1:00 PM</span></div></div><div class="loc-body"><div class="bullet">Korea's youth culture hub — street performers, indie cafes, vintage shops</div><div class="bullet">Time Escape arcade — worth browsing</div><div class="bullet">Tons of trendy food spots and photo zones</div></div><div class="food-row"><strong>🥞 Lunch:</strong> tons of options in Hongdae · bingsu, Korean fried chicken, cafes</div></div>
-          <div class="loc"><div class="loc-transit"><span>🚆</span> Seoul Metro to Yeouinaru · ~15 min</div><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Han River Park · Yeouido</span><span class="loc-time">2:00 PM → 4:00 PM</span></div></div><div class="loc-body"><div class="bullet">Grab convenience store food and eat by the river</div><div class="bullet">Rent bikes along the Han River path — great chill afternoon</div><div class="bullet">Just sit and watch the city — surprisingly relaxing</div></div></div>
-          <div class="loc"><div class="loc-transit"><span>🚆</span> Seoul Metro Line 2 to Samseong · ~20 min</div><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Gangnam / COEX Mall</span><span class="loc-time">5:00 PM → 7:00 PM</span></div></div><div class="loc-body"><div class="bullet">Starfield Library inside COEX — massive, free, incredible for photos</div><div class="bullet">Huge underground mall — browse and wander</div></div></div>
-          <div class="loc"><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Chimaek Dinner</span><span class="loc-time">7:30 PM</span></div></div><div class="loc-body"><div class="bullet">Korean fried chicken + soda — basically a religion in Korea</div></div><div class="food-row"><strong>🍗 Dinner:</strong> Pelicana or any local chimaek spot · ₩18,000–25,000 per portion · double-fried, impossibly crispy</div></div>
+  
+      <!-- HOTEL TAB -->
+      <div class="tp" id="seoul-hotel">
+        <div class="hc">
+          <div class="card-lbl">Your Hotel</div>
+          <div class="hn">Oriens Hotel &amp; Residences</div>
+          <div class="ha">50 Samil-daero 2-gil, Jung-gu, Seoul</div>
+          <div class="hal">서울 중구 삼일대로2길 50</div>
+          <div class="hm">
+            <span class="ht">Check-in Jun 7 · 3:00 PM earliest</span>
+            <span class="ht">Check-out Jun 10 · 12:00 PM latest</span>
+            <span class="ht">⭐ 4.2 · Myeongdong</span>
+          </div>
+          <div class="hn2">Apartment-style with full kitchen and washer. Right in Myeongdong — step outside and you're in the food district.<br><br>📞 +82 2-2280-8000</div>
         </div>
       </div>
-      <div class="dc" onclick="toggleDay(this)">
-        <div class="dc-hdr"><div class="dc-num">3</div><div class="dc-info"><div class="dc-ttl">Insadong → Bukchon → N Seoul Tower</div><div class="dc-sub">Jun 9 · ⚠️ Flight tomorrow · early night</div></div><div class="dc-chev">›</div></div>
-        <div class="dc-body">
-          <div class="loc"><div class="loc-transit"><span>🚆</span> Seoul Metro Line 3 to Anguk · ~15 min</div><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Insadong</span><span class="loc-time">10:00 AM → 12:30 PM</span></div></div><div class="loc-body"><div class="bullet">Traditional arts district — indie cafes, Korean snacks, pottery, cute shops</div><div class="bullet">Try bingsu (shaved ice dessert) here</div></div><div class="food-row"><strong>🍧 Snack:</strong> bingsu ₩10,000–18,000 · piled high with red bean, mango, or strawberry</div></div>
-          <div class="loc"><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Bukchon Hanok Village</span><span class="loc-time">12:30 PM → 2:00 PM</span></div><div class="loc-pills"><span class="pill transit">Short walk from Insadong</span></div></div><div class="loc-body"><div class="bullet">Traditional Korean houses on a hillside — great photos</div><div class="bullet">Quiet, scenic, completely different feel from the rest of Seoul</div></div></div>
-          <div class="loc"><div class="loc-transit"><span>🚡</span> Cable car up Namsan Mountain · or walk ~20 min uphill</div><div class="loc-hdr"><div class="loc-top"><span class="loc-name">N Seoul Tower</span><span class="loc-time">3:00 PM → 5:30 PM</span></div><div class="loc-pills"><span class="pill">Tower entry ~₩16,000</span></div></div><div class="loc-body"><div class="bullet">360° views of all of Seoul</div><div class="bullet">Famous love locks on the fence around the base</div><div class="bullet">Go at dusk for both daylight and city lights</div></div></div>
-          <div class="loc"><div class="loc-hdr"><div class="loc-top"><span class="loc-name">Hotel · Early Night</span><span class="loc-time">8:00 PM</span></div><div class="loc-pills"><span class="pill warn">⚠️ Flight CKG 2:05 PM · check out by 12 PM · leave hotel 10:30 AM</span></div></div><div class="loc-body"><div class="bullet">Pack tonight — flight to Chongqing tomorrow afternoon</div></div></div>
+  
+      <!-- EMERGENCY TAB -->
+      <div class="tp" id="seoul-emergency">
+        <div class="card">
+          <div class="card-lbl">Emergency Numbers</div>
+          <div class="card-bod">
+            <div class="en"><span class="en-lbl">Police</span><span class="en-val">112</span></div>
+            <div class="en"><span class="en-lbl">Ambulance / Fire</span><span class="en-val">119</span></div>
+            <div class="en"><span class="en-lbl">Tourist Helpline (EN)</span><span class="en-val">1330</span></div>
+            <div class="en"><span class="en-lbl">US Embassy Seoul</span><span class="en-val">02-397-4114</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Key Addresses</div>
+          <div class="card-bod">
+            <div class="ab"><div class="ab-place">Oriens Hotel</div><div class="ab-local">서울 중구 삼일대로2길 50</div><div class="ab-en">50 Samil-daero 2-gil, Jung-gu</div></div>
+            <div class="ab"><div class="ab-place">Gyeongbokgung Palace</div><div class="ab-local">경복궁 · 서울 종로구 사직로 161</div><div class="ab-en">161 Sajik-ro, Jongno-gu, Seoul</div></div>
+            <div class="ab"><div class="ab-place">Myeongdong</div><div class="ab-local">명동 · 서울 중구 명동</div><div class="ab-en">Myeong-dong, Jung-gu, Seoul</div></div>
+            <div class="ab"><div class="ab-place">Starfield COEX Mall</div><div class="ab-local">코엑스몰 · 서울 강남구 영동대로 513</div><div class="ab-en">513 Yeongdong-daero, Gangnam-gu</div></div>
+            <div class="ab"><div class="ab-place">Incheon Airport (ICN)</div><div class="ab-local">인천국제공항</div><div class="ab-en">272 Gonghang-ro, Jung-gu, Incheon</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Useful Phrases</div>
+          <div class="card-bod">
+            <div class="en"><span class="en-lbl">Help!</span><span class="en-val">도와주세요!</span></div>
+            <div class="en"><span class="en-lbl">Where is...?</span><span class="en-val">...어디에요?</span></div>
+            <div class="en"><span class="en-lbl">How much?</span><span class="en-val">얼마예요?</span></div>
+            <div class="en"><span class="en-lbl">Thank you</span><span class="en-val">감사합니다</span></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="tp" id="seoul-food">
-      <div class="fc"><div class="fe">🥩</div><div><div class="fn">Korean BBQ</div><div class="fl">삼겹살 / 갈비</div><div class="fd">Grill pork belly or beef short ribs at the table. Wrap in lettuce with garlic and sauce. Order banchan side dishes — free refills.</div><span class="ft">₩15,000–25,000/person</span></div></div>
-      <div class="fc"><div class="fe">🌶️</div><div><div class="fn">Tteokbokki</div><div class="fl">떡볶이</div><div class="fd">Spicy chewy rice cakes in gochujang sauce. Street food staple all over Myeongdong.</div><span class="ft">₩3,000–5,000</span><span class="ft">Street food</span></div></div>
-      <div class="fc"><div class="fe">🍗</div><div><div class="fn">Korean Fried Chicken</div><div class="fl">치킨 (Chimaek)</div><div class="fd">Double-fried, impossibly crispy. Order yangnyeom (sweet+spicy glazed). Best with soda.</div><span class="ft">₩18,000–25,000/portion</span></div></div>
-      <div class="fc"><div class="fe">🌭</div><div><div class="fn">Korean Corn Dog</div><div class="fl">핫도그</div><div class="fd">Stretchy mozzarella corn dog rolled in sugar. Myeongdong street food essential.</div><span class="ft">₩3,000–5,000</span><span class="ft">Myeongdong</span></div></div>
-      <div class="fc"><div class="fe">🍧</div><div><div class="fn">Bingsu</div><div class="fl">빙수</div><div class="fd">Korean shaved ice piled high with toppings — red bean, mango, condensed milk. Perfect for hot June weather.</div><span class="ft">₩10,000–18,000</span></div></div>
-    </div>
-    <div class="tp" id="seoul-transport">
-      <div class="card"><div class="card-lbl">First Thing at ICN</div><div class="card-ttl">Get T-money Cards</div><div class="card-bod">Buy at airport GS25 or CU convenience store. Load ₩20,000–30,000. Works on all Seoul Metro and buses. Tap in and out.</div></div>
-      <div class="card"><div class="card-lbl">Airport → City</div><div class="card-ttl">AREX Train</div><div class="card-bod">Airport Railroad from ICN T1. ~45 min to Seoul Station direct (~₩9,500). Use T-money card.</div></div>
-      <div class="card"><div class="card-lbl">Getting Around</div><div class="card-bod">
-        <div class="tr-row"><div class="tr-icon">🚇</div><div><div class="tr-ttl">Seoul Metro</div><div class="tr-desc">Extensive, cheap, clean. Signs in English. Most rides ₩1,400–2,000. Use Naver Maps or Google Maps for routing.</div></div></div>
-        <div class="tr-row"><div class="tr-icon">🚕</div><div><div class="tr-ttl">Kakao T</div><div class="tr-desc">Korea's Uber. Download app before arriving. Taxis are cheap and safe — most drivers use translation apps.</div></div></div>
-      </div></div>
-      <div class="card"><div class="card-lbl">⚠️ Departure · Jun 10</div><div class="card-ttl">Leave Hotel 10:30 AM</div><div class="card-bod">Flight to CKG is 2:05 PM. Check out latest 12:00 PM. AREX to ICN ~45 min. Arrive airport by 12:30 PM minimum.</div></div>
-    </div>
-    <div class="tp" id="seoul-hotel">
-      <div class="hc"><div class="card-lbl">Your Hotel</div><div class="hn">Oriens Hotel &amp; Residences</div><div class="ha">50 Samil-daero 2-gil, Jung-gu, Seoul</div><div class="hal">서울 중구 삼일대로2길 50</div><div class="hm"><span class="ht">Check-in Jun 7 · 3:00 PM earliest</span><span class="ht">Check-out Jun 10 · 12:00 PM latest</span><span class="ht">⭐ 4.2 · Myeongdong</span></div><div class="hn2">Apartment-style with full kitchen and washer. Right in Myeongdong — step outside and you're in the food district.<br><br>📞 +82 2-2280-8000</div></div>
-    </div>
-    <div class="tp" id="seoul-emergency">
-      <div class="card"><div class="card-lbl">Emergency Numbers</div><div class="card-bod">
-        <div class="en"><span class="en-lbl">Police</span><span class="en-val">112</span></div>
-        <div class="en"><span class="en-lbl">Ambulance / Fire</span><span class="en-val">119</span></div>
-        <div class="en"><span class="en-lbl">Tourist Helpline (EN)</span><span class="en-val">1330</span></div>
-        <div class="en"><span class="en-lbl">US Embassy Seoul</span><span class="en-val">02-397-4114</span></div>
-      </div></div>
-      <div class="card"><div class="card-lbl">Key Addresses</div><div class="card-bod">
-        <div class="ab"><div class="ab-place">Oriens Hotel</div><div class="ab-local">서울 중구 삼일대로2길 50</div><div class="ab-en">50 Samil-daero 2-gil, Jung-gu</div></div>
-        <div class="ab"><div class="ab-place">Gyeongbokgung Palace</div><div class="ab-local">경복궁 · 서울 종로구 사직로 161</div><div class="ab-en">161 Sajik-ro, Jongno-gu, Seoul</div></div>
-        <div class="ab"><div class="ab-place">Myeongdong</div><div class="ab-local">명동 · 서울 중구 명동</div><div class="ab-en">Myeong-dong, Jung-gu, Seoul</div></div>
-        <div class="ab"><div class="ab-place">Incheon Airport (ICN)</div><div class="ab-local">인천국제공항</div><div class="ab-en">272 Gonghang-ro, Jung-gu, Incheon</div></div>
-      </div></div>
-      <div class="card"><div class="card-lbl">Useful Phrases</div><div class="card-bod">
-        <div class="en"><span class="en-lbl">Help!</span><span class="en-val">도와주세요!</span></div>
-        <div class="en"><span class="en-lbl">Where is...?</span><span class="en-val">...어디에요?</span></div>
-        <div class="en"><span class="en-lbl">How much?</span><span class="en-val">얼마예요?</span></div>
-        <div class="en"><span class="en-lbl">Thank you</span><span class="en-val">감사합니다</span></div>
-      </div></div>
-    </div>
-  </div>
-</div>
+  
+    </div><!-- end content -->
+  </div><!-- end screen-seoul -->
 
 <!-- CHONGQING -->
 <div class="screen" id="screen-chongqing">
@@ -763,7 +999,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font
         <div class="tr-row"><div class="tr-icon">🚇</div><div><div class="tr-ttl">Chongqing Rail Transit</div><div class="tr-desc">Pay by WeChat/Alipay QR. Line 2 famously runs through the Liziba residential building — worth riding.</div></div></div>
         <div class="tr-row"><div class="tr-icon">🚕</div><div><div class="tr-ttl">DiDi</div><div class="tr-desc">Chinese Uber. Pay with WeChat Pay. Show destination in Chinese on maps — drivers usually speak no English.</div></div></div>
       </div></div>
-      <div class="card"><div class="card-lbl">⚠️ Departure · Jun 14 12:58 PM</div><div class="card-ttl">Gaotie to Zhangjiajie</div><div class="card-bod">From <strong>Chongqing North Station (重庆北)</strong>. ~4–5 hrs. Book on Trip.com with all 5 passport numbers. Passport required at gate.</div></div>
+      <div class="card"><div class="card-lbl">⚠️ Departure · Jun 14 Morning</div><div class="card-ttl">Gaotie to Zhangjiajie</div><div class="card-bod">From <strong>Chongqing North Station (重庆北)</strong>. ~4–5 hrs. Book on Trip.com with all 5 passport numbers. Passport required at gate.</div></div>
     </div>
     <div class="tp" id="chongqing-hotel">
       <div class="hc"><div class="card-lbl">Your Hotel</div><div class="hn">Da Ji Jun Ting Design Hotel</div><div class="ha">Yuzhong District, Chongqing</div><div class="hal">重庆市渝中区</div><div class="hm"><span class="ht">Check-in Jun 10 · Arrive ~6 PM</span><span class="ht">Check-out Jun 14 · Early for train</span></div><div class="hn2">Boutique design hotel in central Chongqing. Near Jiefangbei and Hongya Cave.<br><br>⚠️ Show passport at check-in — required by law in China.</div></div>
@@ -792,44 +1028,307 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font
 
 <!-- ZHANGJIAJIE -->
 <div class="screen" id="screen-zhangjiajie">
-  <div class="hdr"><div class="hdr-top"><div class="hdr-city">Zhangjiajie 🏔️</div><div style="font-size:22px">🇨🇳</div></div><div class="hdr-dates">Jun 14–17 · Arrive by train · Depart DYG 11:00 AM</div></div>
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('zhangjiajie','itinerary',this)">Itinerary</div>
-    <div class="tab" onclick="switchTab('zhangjiajie','food',this)">Food</div>
-    <div class="tab" onclick="switchTab('zhangjiajie','transport',this)">Transport</div>
-    <div class="tab" onclick="switchTab('zhangjiajie','hotel',this)">Hotel</div>
-    <div class="tab" onclick="switchTab('zhangjiajie','emergency',this)">Emergency</div>
-  </div>
-  <div class="content">
-    <div class="tp active" id="zhangjiajie-itinerary"><div class="ph"><div class="ph-icon">🗺️</div><div class="ph-ttl">Itinerary Coming Soon</div><div class="ph-txt">3 nights Jun 14–17. Bailong Elevator, Avatar mountains, Tianmen Mountain glass walkway. Hotel is 10 min walk from East Gate.</div></div></div>
-    <div class="tp" id="zhangjiajie-food"><div class="ph"><div class="ph-icon">🍲</div><div class="ph-ttl">Add Food Spots</div><div class="ph-txt">Hunan cuisine — famously spicy. Hotel staff can recommend and book restaurants nearby.</div></div></div>
-    <div class="tp" id="zhangjiajie-transport">
-      <div class="card"><div class="card-lbl">Arrival · Jun 14</div><div class="card-ttl">By Gaotie from Chongqing</div><div class="card-bod">~2-3 hr train. Arrive at <strong>Zhangjiajie Station at around  (张家界站)</strong>. Taxi to hotel ~40 min. Manyuan Resort is 10-min walk to park East Gate.</div></div>
-      <div class="card"><div class="card-lbl">Inside the Park</div><div class="card-bod">
-        <div class="tr-row"><div class="tr-icon">🛗</div><div><div class="tr-ttl">Bailong Elevator (百龙天梯)</div><div class="tr-desc">World's tallest outdoor elevator — 326m up a cliff face. Included with park entry. Go early to avoid queues.</div></div></div>
-        <div class="tr-row"><div class="tr-icon">🚠</div><div><div class="tr-ttl">Cable Cars</div><div class="tr-desc">Tianmen Mountain has the longest cable car in the world (~7.5 km). Multiple routes across the park.</div></div></div>
-        <div class="tr-row"><div class="tr-icon">🚌</div><div><div class="tr-ttl">Free Shuttle Buses</div><div class="tr-desc">Included with park ticket. Connect all major areas. Pick up a route map at the gate.</div></div></div>
-      </div></div>
-      <div class="card"><div class="card-lbl">⚠️ Departure · Jun 17</div><div class="card-ttl">Flight DYG → XIY at 11:00 AM</div><div class="card-bod">Leave hotel by <strong>8:30 AM</strong>. DiDi to DYG airport ~30 min. Arrive 90 min before departure. Passport required.</div></div>
+    <div class="hdr">
+      <div class="hdr-top">
+        <div class="hdr-city">Zhangjiajie 🏔️</div>
+        <div style="font-size:22px">🇨🇳</div>
+      </div>
+      <div class="hdr-dates">Jun 14–17 · Arrive by gaotie · Depart DYG 11:00 AM → Xi'an</div>
     </div>
-    <div class="tp" id="zhangjiajie-hotel">
-      <div class="hc"><div class="card-lbl">Your Hotel</div><div class="hn">Manyuan Resort Hotel</div><div class="ha">Wulingyuan District, Zhangjiajie, Hunan</div><div class="hal">湖南省张家界市武陵源区</div><div class="hm"><span class="ht">Check-in Jun 14 · Evening</span><span class="ht">Check-out Jun 17 · By 8:30 AM</span><span class="ht">⭐ 4.5 · 10 min to East Gate</span></div><div class="hn2">10-min walk to park East Gate. Staff gives trail advice and can buy park tickets for you. Free laundry service.<br><br>📞 +86 744 551 9888</div></div>
+  
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('zhangjiajie','itinerary',this)">Itinerary</div>
+      <div class="tab" onclick="switchTab('zhangjiajie','food',this)">Food</div>
+      <div class="tab" onclick="switchTab('zhangjiajie','transport',this)">Transport</div>
+      <div class="tab" onclick="switchTab('zhangjiajie','hotel',this)">Hotel</div>
+      <div class="tab" onclick="switchTab('zhangjiajie','emergency',this)">Emergency</div>
     </div>
-    <div class="tp" id="zhangjiajie-emergency">
-      <div class="card"><div class="card-lbl">Emergency Numbers</div><div class="card-bod">
-        <div class="en"><span class="en-lbl">Police</span><span class="en-val">110</span></div>
-        <div class="en"><span class="en-lbl">Ambulance</span><span class="en-val">120</span></div>
-        <div class="en"><span class="en-lbl">Park Emergency</span><span class="en-val">0744-5716-1234</span></div>
-      </div></div>
-      <div class="card"><div class="card-lbl">Key Addresses</div><div class="card-bod">
-        <div class="ab"><div class="ab-place">Manyuan Resort Hotel</div><div class="ab-local">漫苑度假酒店 · 张家界市武陵源区</div><div class="ab-en">Wulingyuan District, Zhangjiajie</div></div>
-        <div class="ab"><div class="ab-place">Zhangjiajie National Forest Park</div><div class="ab-local">张家界国家森林公园</div><div class="ab-en">Zhangjiajie City, Hunan Province</div></div>
-        <div class="ab"><div class="ab-place">Tianmen Mountain</div><div class="ab-local">天门山国家森林公园</div><div class="ab-en">Tianmen Mountain National Park</div></div>
-        <div class="ab"><div class="ab-place">DYG Airport</div><div class="ab-local">张家界荷花国际机场</div><div class="ab-en">Zhangjiajie Hehua International Airport</div></div>
-      </div></div>
-    </div>
-  </div>
-</div>
+  
+    <div class="content">
+  
+      <!-- ITINERARY TAB -->
+      <div class="tp active" id="zhangjiajie-itinerary">
+  
+        <!-- DAY 1 -->
+        <div class="dc open" onclick="toggleDay(this)">
+          <div class="dc-hdr">
+            <div class="dc-num">1</div>
+            <div class="dc-info">
+              <div class="dc-ttl">Arrival + Charming Xiangxi</div>
+              <div class="dc-sub">Jun 14 · Arrive ~3:30 PM by gaotie</div>
+            </div>
+            <div class="dc-chev">›</div>
+          </div>
+          <div class="dc-body">
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚄</span> Gaotie from Chongqing → Zhangjiajie Station (张家界站) · ~4–5 hrs · arrive ~3:30 PM</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Arrive Zhangjiajie</span><span class="loc-time">~3:30 PM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Exit at Zhangjiajie Station — not the high-speed station, confirm your stop</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚕</span> DiDi from station → Manyuan Resort · ~15–20 min</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Check In · Manyuan Resort</span><span class="loc-time">~4:00 PM</span></div>
+                <div class="loc-pills"><span class="pill">10-min walk to East Gate</span><span class="pill">Ask staff about park tickets</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Drop bags and freshen up — evening show is at 8 PM, plenty of time</div>
+                <div class="bullet">Ask hotel staff to arrange park tickets for tomorrow if you haven't bought online</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚕</span> DiDi or hotel taxi to Grand Opera Theatre · ~10 min</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Charming Xiangxi · Grand Opera Theatre</span><span class="loc-time">8:00 PM → 9:30 PM</span></div>
+                <div class="loc-pills"><span class="pill green">Book tickets in advance</span><span class="pill">Wulingyuan district</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Massive outdoor performance — acrobatics, folk dance, Tujia & Miao culture, fire acts</div>
+                <div class="bullet">One of the top-rated shows in Hunan — staged on a natural mountain backdrop</div>
+                <div class="bullet">Show is ~90 min · dress for outdoor evening · can get cool in the mountains</div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+  
+        <!-- DAY 2 -->
+        <div class="dc" onclick="toggleDay(this)">
+          <div class="dc-hdr">
+            <div class="dc-num">2</div>
+            <div class="dc-info">
+              <div class="dc-ttl">Zhangjiajie National Forest Park</div>
+              <div class="dc-sub">Jun 15 · Full day · Gate 8–9 AM</div>
+            </div>
+            <div class="dc-chev">›</div>
+          </div>
+          <div class="dc-body">
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">East Gate → Bailong Elevator</span><span class="loc-time">8:00 AM → 9:30 AM</span></div>
+                <div class="loc-pills"><span class="pill warn">Arrive before 9 AM — queues build fast</span><span class="pill">B Line from East Gate</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Take the B line shuttle bus from East Gate up toward the elevator area</div>
+                <div class="bullet">Bailong Elevator (百龙天梯) — world's tallest outdoor elevator, 326m up a sheer cliff face</div>
+                <div class="bullet">Included with park entry ticket · the view from the top is immediately insane</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Yuanjiajie</span><span class="loc-time">9:30 AM → 11:30 AM</span></div>
+                <div class="loc-pills"><span class="pill">Avatar Hallelujah Mountain</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">The floating pillars that inspired the Avatar mountains — stunning at any angle</div>
+                <div class="bullet">Yuanjiajie Overlook and First Bridge Under Heaven are the must-see spots here</div>
+                <div class="bullet">Take the free shuttle between viewpoints</div>
+              </div>
+              <div class="food-row"><strong>🍱 Lunch:</strong> pack snacks or grab food at one of the park canteens · ¥30–60 pp</div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Yangjiajie</span><span class="loc-time">12:30 PM → 2:30 PM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Less crowded than Yuanjiajie — dramatic cliff-edge paths and rock formations</div>
+                <div class="bullet">Mihun Terrace and Hallelujah Mountain viewpoints are highlights</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Tianzishan</span><span class="loc-time">3:00 PM → 5:30 PM</span></div>
+                <div class="loc-pills"><span class="pill">"Son of Heaven" ridge</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Take the Tianzishan cable car up — views the whole way</div>
+                <div class="bullet">Helong Park and Shentang Bay lookout are the best stops up top</div>
+                <div class="bullet">Head back down via cable car before 6 PM — last cars fill up fast</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚕</span> Park shuttle → East Gate → walk back to Manyuan · ~20 min</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Dinner + Rest</span><span class="loc-time">7:00 PM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Dinner near hotel in Wulingyuan — Hunan cuisine spots all along the main strip</div>
+                <div class="bullet">Early night — big day on your feet, another full day tomorrow</div>
+              </div>
+              <div class="food-row"><strong>🌶️ Dinner:</strong> Hunan food near Wulingyuan — spicy fish, smoked pork, stir-fried vegetables · ¥40–80 pp</div>
+            </div>
+  
+          </div>
+        </div>
+  
+        <!-- DAY 3 -->
+        <div class="dc" onclick="toggleDay(this)">
+          <div class="dc-hdr">
+            <div class="dc-num">3</div>
+            <div class="dc-info">
+              <div class="dc-ttl">Glass Bridge + Tianmen Mountain</div>
+              <div class="dc-sub">Jun 16 · City day · taxi back evening</div>
+            </div>
+            <div class="dc-chev">›</div>
+          </div>
+          <div class="dc-body">
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚕</span> DiDi from hotel → Zhangjiajie Grand Canyon · ~45 min</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Zhangjiajie Grand Canyon Glass Bridge</span><span class="loc-time">8:30 AM → 11:30 AM</span></div>
+                <div class="loc-pills"><span class="pill warn">Book time slot in advance online — sells out</span><span class="pill">Separate ticket from forest park</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">World's longest and highest glass-bottomed bridge — 430m long, 300m above the canyon</div>
+                <div class="bullet">Genuinely terrifying in the best way — great for photos and videos</div>
+                <div class="bullet">Canyon hiking trails below are worth 30–60 min if you have time</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚕</span> DiDi from canyon → Zhangjiajie City cable car base · ~1 hr</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Tianmen Mountain Cable Car</span><span class="loc-time">1:00 PM → 5:30 PM</span></div>
+                <div class="loc-pills"><span class="pill">World's longest cable car · 7.5 km</span><span class="pill">Separate park ticket</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Cable car from the city rises 7.5 km over the mountain — views the whole ride</div>
+                <div class="bullet">Tianmen Cave (Heaven's Gate) — massive natural arch you walk through</div>
+                <div class="bullet">Glass skywalk runs along the cliff edge at the top — ¥50 extra but worth it</div>
+                <div class="bullet">999 steps down to Tianmen Cave if you want the full experience</div>
+              </div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Dinner in Zhangjiajie City</span><span class="loc-time">6:30 PM → 8:00 PM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Eat in the city centre before heading back — more restaurant variety than Wulingyuan</div>
+                <div class="bullet">Try steamed fish in sour broth (酸汤鱼) or Hunan-style hotpot</div>
+              </div>
+              <div class="food-row"><strong>🍲 Dinner:</strong> Zhangjiajie city centre · Hunan hotpot or local restaurants · ¥50–100 pp</div>
+            </div>
+  
+            <div class="loc">
+              <div class="loc-transit"><span>🚕</span> DiDi from city → Manyuan Resort · ~45 min · book in advance if possible</div>
+              <div class="loc-hdr">
+                <div class="loc-top"><span class="loc-name">Return to Hotel · Pack</span><span class="loc-time">~9:00 PM</span></div>
+                <div class="loc-pills"><span class="pill warn">⚠️ Flight DYG 11:00 AM · Check out by 8:30 AM · Leave hotel 8:00 AM</span></div>
+              </div>
+              <div class="loc-body">
+                <div class="bullet">Pack tonight — early departure tomorrow morning</div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+  
+      </div><!-- end itinerary tab -->
+  
+      <!-- FOOD TAB -->
+      <div class="tp" id="zhangjiajie-food">
+        <div class="fc"><div class="fe">🌶️</div><div><div class="fn">Mao's Braised Pork</div><div class="fl">毛氏红烧肉</div><div class="fd">Mao Zedong's Hunan hometown dish — thick-cut pork belly braised in soy, sugar and chili until meltingly tender. Rich, sticky, and famous across China.</div><span class="ft">¥40–60/portion</span></div></div>
+        <div class="fc"><div class="fe">🐟</div><div><div class="fn">Sour Broth Fish</div><div class="fl">酸汤鱼</div><div class="fd">Fish simmered in a tangy fermented broth with chili and tomato. A Hunan/Guizhou border staple — bright, sour, and spicy.</div><span class="ft">¥50–80</span><span class="ft">City restaurants</span></div></div>
+        <div class="fc"><div class="fe">🥩</div><div><div class="fn">Smoked Pork</div><div class="fl">腊肉</div><div class="fd">Tujia minority specialty — pork smoked over wood and stir-fried with garlic shoots or chili. Deep smoky flavour, very different from BBQ.</div><span class="ft">¥30–50</span><span class="ft">Local specialty</span></div></div>
+        <div class="fc"><div class="fe">🍲</div><div><div class="fn">Hunan Hotpot</div><div class="fl">湖南火锅</div><div class="fd">Spicier than Chongqing-style. Numbing mala broth loaded with chili oil. Perfect for a group — order offal, tofu, and veggies to go with the meat.</div><span class="ft">¥60–100/person</span></div></div>
+        <div class="fc"><div class="fe">🌿</div><div><div class="fn">Stir-fried Wild Vegetables</div><div class="fl">野菜炒肉</div><div class="fd">Foraged mountain greens from the Wulingyuan area stir-fried with pork. Simple but tastes completely different from city vegetables.</div><span class="ft">¥25–40</span><span class="ft">Near park / hotel</span></div></div>
+      </div>
+  
+      <!-- TRANSPORT TAB -->
+      <div class="tp" id="zhangjiajie-transport">
+        <div class="card">
+          <div class="card-lbl">Arrival · Jun 14</div>
+          <div class="card-ttl">Gaotie from Chongqing</div>
+          <div class="card-bod">~4–5 hr high-speed train. Arrive at <strong>Zhangjiajie Station (张家界站)</strong>. DiDi to Manyuan Resort ~15–20 min. Note: there are two stations — confirm you're going to 张家界站, not the newer high-speed station outside the city.</div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Inside the Park · Jun 15</div>
+          <div class="card-bod">
+            <div class="tr-row"><div class="tr-icon">🛗</div><div><div class="tr-ttl">Bailong Elevator (百龙天梯)</div><div class="tr-desc">326m outdoor elevator up a cliff. Included in park ticket. B Line bus from East Gate. Go before 9 AM to beat queues.</div></div></div>
+            <div class="tr-row"><div class="tr-icon">🚌</div><div><div class="tr-ttl">Free Shuttle Buses</div><div class="tr-desc">Connect East Gate, Bailong, Yuanjiajie, Yangjiajie, and Tianzishan. Pick up route map at the gate. Last shuttles ~6 PM.</div></div></div>
+            <div class="tr-row"><div class="tr-icon">🚠</div><div><div class="tr-ttl">Tianzishan Cable Car</div><div class="tr-desc">Up and down Tianzishan — quick and scenic. Included in park entry. Last car down ~5:30 PM, don't miss it.</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">City Day · Jun 16</div>
+          <div class="card-bod">
+            <div class="tr-row"><div class="tr-icon">🚕</div><div><div class="tr-ttl">DiDi between sites</div><div class="tr-desc">Glass Bridge (canyon area) → Tianmen Mountain (city) → city dinner → hotel. Budget ~¥80–120 per leg. Book return ride before dinner.</div></div></div>
+            <div class="tr-row"><div class="tr-icon">🚠</div><div><div class="tr-ttl">Tianmen Mountain Cable Car</div><div class="tr-desc">7.5 km, world's longest. Runs from the city centre base station. Separate ticket from forest park. Cable car + attractions ~¥260.</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">⚠️ Departure · Jun 17</div>
+          <div class="card-ttl">Flight DYG → XIY at 11:00 AM</div>
+          <div class="card-bod">Leave hotel by <strong>8:00 AM</strong>. DiDi to DYG airport ~30 min. Arrive at airport by 9:00 AM minimum (domestic). Passport required. Xi'an Xianyang airport code is XIY.</div>
+        </div>
+      </div>
+  
+      <!-- HOTEL TAB -->
+      <div class="tp" id="zhangjiajie-hotel">
+        <div class="hc">
+          <div class="card-lbl">Your Hotel</div>
+          <div class="hn">Manyuan Resort Hotel</div>
+          <div class="ha">Wulingyuan District, Zhangjiajie, Hunan</div>
+          <div class="hal">湖南省张家界市武陵源区</div>
+          <div class="hm">
+            <span class="ht">Check-in Jun 14 · Evening</span>
+            <span class="ht">Check-out Jun 17 · By 8:00 AM</span>
+            <span class="ht">⭐ 4.5 · 10 min to East Gate</span>
+          </div>
+          <div class="hn2">10-min walk to park East Gate. Staff can arrange park tickets and recommend restaurants. Free laundry service.<br><br>📞 +86 744 551 9888</div>
+        </div>
+      </div>
+  
+      <!-- EMERGENCY TAB -->
+      <div class="tp" id="zhangjiajie-emergency">
+        <div class="card">
+          <div class="card-lbl">Emergency Numbers</div>
+          <div class="card-bod">
+            <div class="en"><span class="en-lbl">Police</span><span class="en-val">110</span></div>
+            <div class="en"><span class="en-lbl">Ambulance</span><span class="en-val">120</span></div>
+            <div class="en"><span class="en-lbl">Fire</span><span class="en-val">119</span></div>
+            <div class="en"><span class="en-lbl">Park Emergency</span><span class="en-val">0744-5716-1234</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Key Addresses</div>
+          <div class="card-bod">
+            <div class="ab"><div class="ab-place">Manyuan Resort Hotel</div><div class="ab-local">漫苑度假酒店 · 张家界市武陵源区</div><div class="ab-en">Wulingyuan District, Zhangjiajie</div></div>
+            <div class="ab"><div class="ab-place">Zhangjiajie National Forest Park (East Gate)</div><div class="ab-local">张家界国家森林公园东门</div><div class="ab-en">Wulingyuan District, Zhangjiajie</div></div>
+            <div class="ab"><div class="ab-place">Grand Canyon Glass Bridge</div><div class="ab-local">张家界大峡谷玻璃桥</div><div class="ab-en">Zhangjiajie Grand Canyon, Cili County</div></div>
+            <div class="ab"><div class="ab-place">Tianmen Mountain</div><div class="ab-local">天门山国家森林公园</div><div class="ab-en">Tianmen Mountain National Park, city centre</div></div>
+            <div class="ab"><div class="ab-place">Charming Xiangxi Theatre</div><div class="ab-local">魅力湘西大剧院 · 武陵源区</div><div class="ab-en">Grand Opera Theatre, Wulingyuan District</div></div>
+            <div class="ab"><div class="ab-place">DYG Airport</div><div class="ab-local">张家界荷花国际机场</div><div class="ab-en">Zhangjiajie Hehua International Airport</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Useful Phrases</div>
+          <div class="card-bod">
+            <div class="en"><span class="en-lbl">Help!</span><span class="en-val">救命！</span></div>
+            <div class="en"><span class="en-lbl">Where is...?</span><span class="en-val">...在哪里？</span></div>
+            <div class="en"><span class="en-lbl">How much?</span><span class="en-val">多少钱？</span></div>
+            <div class="en"><span class="en-lbl">Thank you</span><span class="en-val">谢谢</span></div>
+            <div class="en"><span class="en-lbl">I need a doctor</span><span class="en-val">我需要医生</span></div>
+          </div>
+        </div>
+      </div>
+  
+    </div><!-- end content -->
+  </div><!-- end screen-zhangjiajie -->
 
 <!-- XI'AN -->
 <div class="screen" id="screen-xian">
